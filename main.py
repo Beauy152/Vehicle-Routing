@@ -2,9 +2,12 @@ import pygame
 from data import GoogleTestData
 from gui_functions import *
 from node import Node
+from clustering import kmeans_std
 
 Data  = GoogleTestData()
 Nodes =[]
+
+
 
 #Convert Locations to Nodes
 depot = True
@@ -17,8 +20,8 @@ for loc in Data:
 
     Nodes.append( Node(loc[0],loc[1],val) )
 
-print(Nodes)
-
+#print(Nodes)
+kmeans_std(Nodes,3)
 
 """
 Ultimately, the gui output should be reflecting the 
@@ -38,8 +41,8 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
         #Draw
-        GC.Draw(Data)
-        GC.Path(Nodes[0].coords,Nodes[11].coords)
+        GC.Draw(Nodes)
+
         GC.update()
     clock.tick(10)#Limit FPS
 pygame.quit()

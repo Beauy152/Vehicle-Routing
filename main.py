@@ -21,7 +21,7 @@ for loc in Data:
     Nodes.append( Node(loc[0],loc[1],val) )
 
 #print(Nodes)
-kmeans_std(Nodes,3)
+kmeans_std(Nodes[1:],3)#Nodes[1:]excludes the first node (depot) from clustering
 
 """
 Ultimately, the gui output should be reflecting the 

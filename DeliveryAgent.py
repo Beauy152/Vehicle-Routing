@@ -2,9 +2,10 @@ from math import sqrt
 
 class DeliveryAgent():
     """Delivery Agent / Vehicle class"""
-    def __init__(self,_x,_y,_capacity ):
-        self.x = _x
-        self.y = _y
+    def __init__(self,_id,_x,_y,_capacity ):
+        self.id = "v_%s" % _id
+        self.x  = _x
+        self.y  = _y
         self.capacity = _capacity
 
     def getDistanceTo(self,location):
@@ -13,7 +14,23 @@ class DeliveryAgent():
         (Straigh line distance)"""
         return sqrt( ( (self.x - location[0])**2 + (self.y - location[1])**2 ) )
 
+    def AskIf(self):
+        """Send inquiry to agent"""
+        pass
     
+    def Tell(self):
+        """Send knowledge/data to agent"""
+        pass
+
+    def Reply(self):
+        """Reply to agent"""
+        pass
+
+    def Perform(self):
+        """maybe not useful"""
+        pass
+
+
     def __repr__(self):
             #Python magic function, defines how obj is represented in when print is called
-        return "X:{0},Y:{1},C:{2}".format(self.x,self.y,self.capacity)
+        return "ID:{0}, X:{1}, Y:{2}, C:{3}\n".format(self.id,self.x,self.y,self.capacity)

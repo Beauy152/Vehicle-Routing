@@ -1,6 +1,10 @@
 from random import randint
 from DeliveryAgent import DeliveryAgent
 
+sys_globals = {
+    "total_capacity":None
+}
+
 def TestLocations():
     """Returns location data from google or-tools example"""
     return [(456, 320), # location 0 - the depot
@@ -26,14 +30,18 @@ def TestVehicles(n=5):
     n being the number of delivery agents"""
     vehicles = []
     total_capacity = 0
-    for _ in range(n):
+    for _id in range(n):
         capacity = randint(50,100)
-        agent = DeliveryAgent(0,0,capacity)
+        agent = DeliveryAgent(_id,0,0,capacity)
         total_capacity += agent.capacity
         vehicles.append( agent )#pos=(0,0) : all vehicles start at depot
 
-    print(vehicles)
-    print(total_capacity)
+    sys_globals["total_capacity"] = total_capacity
+    # print(vehicles)
+    # print("Total Capacity: %s" % total_capacity)
+
+    return vehicles
+
     
 
 

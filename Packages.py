@@ -1,5 +1,5 @@
 from random import randint
-from TestData import sys_globals
+# from TestData import sys_globals
 
 def GeneratePackages():
     """Create a list of packages, with a max weight
@@ -7,7 +7,8 @@ def GeneratePackages():
     all delivery agents"""
 
     #Get total capacity of agents
-    print(sys_globals["total_capacity"])
+    # print(sys_globals["total_capacity"])
+    pass
 
 
 class Package():

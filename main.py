@@ -20,5 +20,10 @@ for v in Vehices:
     #prefixes here might make arranging data easier gl_ for global information, and identifiers for others
     Master.Tell(v.id,"(= (capacity {0}) {1})".format(v.id,v.capacity))#spacing between terms is important
 
+#Tell Master to sum capacities of registered vehicles
+#this could be made more verbose by adding a lookup dictionary on the recieving end.
+print("Sum of Vehicle Capacities: %s" % Master.Perform("SumCapacities") )
+
+#
 
 Packages.GeneratePackages()

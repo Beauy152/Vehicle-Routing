@@ -1,9 +1,16 @@
 from random import randint
 from DeliveryAgent import DeliveryAgent
-
+from Packages import Package 
 # sys_globals = {
 #     "total_capacity":None
 # }
+
+def TestPackages():
+    #package(_location,_weight,_earliest,_desired,_latest)
+    #package can be for any location other than 
+    return [
+        Package()
+    ]
 
 def TestLocations():
     """Returns location data from google or-tools example"""

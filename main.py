@@ -31,4 +31,8 @@ print("Sum of Vehicle Capacities: %s" % Master.Perform("SumCapacities") )
 print(Master.KB)
 
 #Ask master for total capacity of vehicle, generate package list accordingly
-Packages = _packages_.GeneratePackages( Master.Ask("(total_capacity {0})".format(Master.id)) )
+Packages = _packages_.GeneratePackages( Master.Ask("(total_capacity {0})".format(Master.id)),Locations )
+
+#Test Line Show combined weight of packages
+print ("sum of package weights:%s" % sum(package.weight for package in Packages) )
+    

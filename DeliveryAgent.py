@@ -7,6 +7,7 @@ class DeliveryAgent():
         self.x  = _x
         self.y  = _y
         self.capacity = _capacity
+        self.fLocation = None
 
     def getDistanceTo(self,location):
         """Given coordinate (x,y) of location, returns

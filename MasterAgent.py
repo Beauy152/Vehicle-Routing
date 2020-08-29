@@ -5,6 +5,7 @@ class MasterRouter():
 
     def __init__(self):
         self.id = "m_"
+        self.packages = None
 
     def RouteAlgorithm(self):
         """Route finding algorithm goes here.
@@ -42,7 +43,6 @@ class MasterRouter():
 
     def Tell(self,sender,content):
         """Adds knowledge to KB"""
-        
         command = ParseKIF(content)#format: [operator,[atrribute,object],value]
 
         if(command[0] == '='):  
@@ -52,6 +52,8 @@ class MasterRouter():
                     }
                 })
 
+    def SetPackages(self,_packages):
+        self.packages = _packages
 
     def Reply(self):
         """Reply to agent"""

@@ -33,6 +33,19 @@ print(Master.KB)
 #Ask master for total capacity of vehicle, generate package list accordingly
 Packages = _packages_.GeneratePackages( Master.Ask("(total_capacity {0})".format(Master.id)),Locations )
 
+#Send package list to master
+Master.SetPackages(Packages)
+
 #Test Line Show combined weight of packages
 print ("sum of package weights:%s" % sum(package.weight for package in Packages) )
     
+
+#Master computes routes
+
+
+#Send Routes to Delivery Agents
+
+
+#Execute Delivery
+
+#

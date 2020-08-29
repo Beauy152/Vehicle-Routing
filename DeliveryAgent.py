@@ -1,3 +1,7 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#DeliveryAgent.py
+
 from math import sqrt
 
 class DeliveryAgent():
@@ -9,27 +13,8 @@ class DeliveryAgent():
         self.capacity = _capacity
         self.fLocation = None
 
-    #Currently Redundant
-    # def getDistanceTo(self,location):
-    #     """Given coordinate (x,y) of location, returns
-    #     distance to it from agents current position
-    #     (Straigh line distance)"""
-    #     return sqrt( ( (self.x - location[0])**2 + (self.y - location[1])**2 ) )
-
-    def AskIf(self):
-        """Send inquiry to agent"""
-        pass
-    
-    def Tell(self):
-        """Send knowledge/data to agent"""
-        pass
-
-    def Reply(self):
-        """Reply to agent"""
-        pass
-
     def Perform(self):
-        """maybe not useful"""
+        """execute Route"""
         pass
 
 

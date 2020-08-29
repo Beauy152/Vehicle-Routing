@@ -1,4 +1,9 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#MasterAgent.py
+
 from HelperFunctions import ParseKIF
+from RouteMap import RouteMap as Map
 
 class MasterRouter():
     KB = {} #Knowledge base. vehicle information
@@ -12,6 +17,9 @@ class MasterRouter():
         a modular approach allows us to easily 
         implement multiple Routing methods"""
         pass
+
+    def SetWorld(self,depot,locations):
+        self.world = Map(depot,locations)
 
     def SumCapacities(self):
         """any KB entry with prefix v_ is a vehicle, sum each capacity attribute"""
@@ -40,7 +48,7 @@ class MasterRouter():
             except KeyError as e:
                 return "{0} could not perform query:{1}".format(self.id,content)
             
-
+        
     def Tell(self,sender,content):
         """Adds knowledge to KB"""
         command = ParseKIF(content)#format: [operator,[atrribute,object],value]
@@ -55,10 +63,6 @@ class MasterRouter():
     def SetPackages(self,_packages):
         self.packages = _packages
 
-    def Reply(self):
-        """Reply to agent"""
-        pass
-
     def Perform(self,command):
         """maybe not useful"""
         """Can't find implementation examples?
@@ -67,8 +71,3 @@ class MasterRouter():
             return eval("self."+command+"()")
         except AttributeError as e:
             return "%s tried to 'Perform' and invalid action." % self.id
-        
-
-    # def Broadcast(self):
-    #     """send communication to all known agents"""
-    #     pass

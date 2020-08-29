@@ -1,21 +1,10 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#TestData.py
+
 from random import choice,randint
 from DeliveryAgent import DeliveryAgent
 from Packages import Package 
-# sys_globals = {
-#     "total_capacity":None
-# }
-
-def TestPackages():
-    #package(_location,_weight,_earliest,_desired,_latest)
-    #package can be for any location other than depot
-
-    #get locations list
-    # locations = TestLocations()
-
-    # return [
-    #     Package(choice(locations), )
-    # ]
-    pass
 
 def TestLocations():
     """Returns location data from google or-tools example"""
@@ -41,23 +30,10 @@ def TestVehicles(n=5):
     """if n is unspecifed, default is 5,
     n being the number of delivery agents"""
     vehicles = []
-    # total_capacity = 0
+
     for _id in range(n):
         capacity = randint(50,100)
         agent = DeliveryAgent(_id,0,0,capacity)
-        # total_capacity += agent.capacity
         vehicles.append( agent )#pos=(0,0) : all vehicles start at depot
 
-    # sys_globals["total_capacity"] = total_capacity
-    # print(vehicles)
-    # print("Total Capacity: %s" % total_capacity)
-
     return vehicles
-
-    
-
-
-        
-def TestPackages():
-    """Generate random test packages, enable seeding?"""
-    pass

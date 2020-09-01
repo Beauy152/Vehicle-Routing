@@ -2,6 +2,7 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #MasterAgent.py
 
+from gui_functions import *
 from HelperFunctions import ParseKIF
 from RouteMap import RouteMap as Map
 
@@ -36,9 +37,6 @@ class MasterRouter():
     #     """Maybe Redundant? send route data to vehicles """
     #     pass
 
-    # def draw(self):
-    #     pass
-
     def Ask(self,content):
         """Send inquiry to agent"""
         command = ParseKIF(content)
@@ -71,3 +69,21 @@ class MasterRouter():
             return eval("self."+command+"()")
         except AttributeError as e:
             return "%s tried to 'Perform' and invalid action." % self.id
+
+    def Draw(self,locations):
+        pygame.init()
+        GC = GuiController( locations )
+
+        #Drawing Loop
+        clock = pygame.time.Clock()
+        done = False
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True
+                #Draw
+                GC.Draw(self.world.warehouse,self.world.locations)
+
+                GC.update()
+            clock.tick(10)#Limit FPS
+        pygame.quit()

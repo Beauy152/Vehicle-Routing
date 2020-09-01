@@ -5,7 +5,8 @@
 from math import sqrt
 
 class Location():
-    def __init__(self, _X, _Y):
+    def __init__(self, _X, _Y,_T='l'):
+        self.Type = _T#default is l for location
         self.X = _X
         self.Y = _Y
         self.coords = "({0},{1})".format(_X,_Y)
@@ -15,7 +16,6 @@ class Location():
         results = "Location: %s\n  Neighbours:\n" % self.coords
         for n in self.neighbours:
             results = results + "    %s : %s,\n" % (n[0],n[1])
-            #results = results + "      %s,\n" % str(n)
         return results
 
 class RouteMap():
@@ -27,7 +27,8 @@ class RouteMap():
         self.locations = _locations
 
         #Single array of warehouse coordinates
-        self.warehouse = _warehouse
+        self.warehouse = []
+        self.warehouse.append(Location(_warehouse[0],_warehouse[1],'d'))#_warehouse
 
         #Array of Location objects
         self.locations = self.InitLocations()
@@ -41,7 +42,6 @@ class RouteMap():
                     dist = round(sqrt( ((n[0] - l[0])**2) + ((n[1] - l[1])**2) ),2 )
                     newlocation.neighbours.append( (str(n),dist) )
             world.append(newlocation)
-        
         return world
 
     def __repr__(self):

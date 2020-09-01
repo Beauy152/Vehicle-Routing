@@ -6,8 +6,6 @@ import TestData
 import Packages as _packages_
 from MasterAgent import MasterRouter
 
-
-
 #Get list of Locations
 Locations = TestData.TestLocations()
 
@@ -44,10 +42,10 @@ Master.SetPackages(Packages)
 #Test Line Show combined weight of packages
 print ("sum of package weights:%s" % sum(package.weight for package in Packages) )
 
+Master.Draw(Locations)
 #Testline#
-# print(Master.grid)
-for l in Master.world.locations:
-    print(l)
+# for l in Master.world.locations:
+#     print(l)
 
 #Master computes routes
 

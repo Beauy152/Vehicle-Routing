@@ -1,5 +1,6 @@
 import pygame
 from math import sqrt
+from RouteMap import Location
 #Colours
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)
@@ -44,12 +45,19 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         pygame.display.update()
 
     def Path(self,A,B):
-        if(type(A) is str): A = eval(A)
-        if(type(B) is str): B = eval(B)
+        # if(type(A) is str): A = eval(A)
+        # if(type(B) is str): B = eval(B)
         """given two nodes, draws a line connecting them"""
-        a = ( (A[0]*self.XSCL) , (A[1]*self.YSCL) )#Scale X,Y values for screen
-        b = ( (B[0]*self.XSCL) , (B[1]*self.YSCL) )
+        a = ( (A.X*self.XSCL) , (A.Y*self.YSCL) )#Scale X,Y values for screen
+        b = ( (B.X*self.XSCL) , (B.Y*self.YSCL) )
         pygame.draw.line(self.layer,BLACK,a,b,1)
+
+    def SplitPoint(self,A,B):
+        # if(type(A) is str): A = eval(A)
+        # if(type(B) is str): B = eval(B)
+        X = (A.X + B.X) / 2
+        Y = (A.Y + B.Y) / 2
+        return Location(X,Y,'s')
 
     def doNodes(self,d):
         """d is a node object"""
@@ -61,15 +69,16 @@ class GuiController():#Set flags on init to enable/disable certain rendering
     
     def doNeighbourConnections(self,Data):
         for node in Data:
-            start = node.coords
             for n in node.neighbours:
-                self.Path(start,n[0])
+                self.Path(node,n)
 
     def Draw(self,Depot,Data):
+        Locations = Data
         self.layer.fill(WHITE)
 
-        self.doNeighbourConnections(Data)
+        self.doNeighbourConnections(Locations)
+        Locations.append(self.SplitPoint(Depot[0],Locations[2]))
 
         self.doNodes(Depot)
-        self.doNodes(Data)
+        self.doNodes(Locations)
     

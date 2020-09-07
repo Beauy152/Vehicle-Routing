@@ -1,6 +1,7 @@
 import pygame
 from math import sqrt
 from RouteMap import Location
+#from DeliveryAgent import DeliveryAgent
 #Colours
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)
@@ -71,13 +72,25 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         for node in Data:
             for n in node.neighbours:
                 self.Path(node,n)
+    
+    def drawRoute(self,route):
+        """Route should be a list of objects with X,Y attributes"""
+        
+        for i in range(len(route)-1) :
+            self.Path(route[i],route[i+1])
 
-    def Draw(self,Depot,Data):
+    def Draw(self,Depot,Data,Vehicles):
         Locations = Data
         self.layer.fill(WHITE)
 
-        self.doNeighbourConnections(Locations)
+        #self.doNeighbourConnections(Locations)
+        for vehicle in Vehicles:
+            if vehicle.route is not None:
+                self.drawRoute(vehicle.route)
+
         Locations.append(self.SplitPoint(Depot[0],Locations[2]))
+
+        
 
         self.doNodes(Depot)
         self.doNodes(Locations)

@@ -26,9 +26,12 @@ class Location(Point):
         self.neighbours = []
 
     def __repr__(self):
-        results = "Location: %s\n  Neighbours:\n" % self.coords
-        for n in self.neighbours:
-            results = results + "    %s : %s,\n" % (n[0],n[1])
+        results = "Location: %s\n  Neighbours:\n" % str(self.coords)
+        if len(self.neighbours) > 0:
+            for n in self.neighbours:
+                results = results + "    %s : %s,\n" % (n.coords,n.dist)
+        else:
+            results = results + "no neighbours."
         return results
 
 # class Location():

@@ -70,7 +70,7 @@ class MasterRouter():
         except AttributeError as e:
             return "%s tried to 'Perform' and invalid action." % self.id
 
-    def Draw(self,locations):
+    def Draw(self,locations,vehicles):
         pygame.init()
         GC = GuiController( locations )
 
@@ -82,7 +82,7 @@ class MasterRouter():
                 if event.type == pygame.QUIT:
                     done = True
                 #Draw
-                GC.Draw(self.world.warehouse,self.world.locations)
+                GC.Draw(self.world.warehouse,self.world.locations,vehicles)
 
                 GC.update()
             clock.tick(10)#Limit FPS

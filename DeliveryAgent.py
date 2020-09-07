@@ -11,6 +11,7 @@ class DeliveryAgent():
         self.x  = _x
         self.y  = _y
         self.capacity = _capacity
+        self.route = None
         self.fLocation = None
 
     def Perform(self):

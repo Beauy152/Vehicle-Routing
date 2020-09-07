@@ -19,7 +19,7 @@ Master.SetWorld(Locations[0],Locations[1:])
 #Create Each Vehicle
 #Each vehicle has a referece to the master router, this is essentially
 #the same as having the contact details of the master, this is used for comms.
-Vehicles = TestData.TestVehicles()
+Vehicles = TestData.TestVehicles(3)
 
 #Each vehicle will send a message to the master in a specified format
 #Master will keep track of vehicle information in an array of dicts.
@@ -45,12 +45,12 @@ print ("sum of package weights:%s" % sum(package.weight for package in Packages)
 
 
 #For testing purposes#
-#for vehicle in Vehicles:
-temp_route = [Master.world.warehouse[0]]
-temp_route.extend(sample(Master.world.locations,randint(1,8)))
-temp_route.append(Master.world.warehouse[0])
-#print(temp_route)
-Vehicles[0].route = temp_route#vehicle.route = temp_route
+for vehicle in Vehicles:
+    temp_route = [Master.world.warehouse[0]]
+    temp_route.extend(sample(Master.world.locations,randint(1,8)))
+    temp_route.append(Master.world.warehouse[0])
+    #Vehicles[0].route = temp_route#
+    vehicle.route = temp_route
 
 Master.Draw(Locations,Vehicles)
 #Testline#

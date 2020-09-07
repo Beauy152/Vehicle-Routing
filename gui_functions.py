@@ -9,6 +9,10 @@ BLUE = (  84, 131, 179)
 MINT = ( 130, 255, 193)
 GREEN= (  57, 143,  57)
 YELLOW=( 255, 241, 120)
+ORANGE=( 255, 200, 138)
+PINK  =( 252, 157, 157)
+RED   =( 235,  63,  63)
+NIGHT =( 140, 136, 181)
 #Colour Lookup
 COLOURS = {
     'l':BLUE, #location
@@ -18,7 +22,7 @@ COLOURS = {
 
 #An iterable list of colours. useful when assigning colours
 #to clusters of nodes
-COL_LIST = [BLUE,MINT,GREEN,YELLOW]
+COL_LIST = [BLUE,MINT,GREEN,YELLOW,ORANGE,PINK,RED,NIGHT]
 #node radius
 R = 8
 #Screen Dimensions
@@ -45,17 +49,13 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         """Refresh drawings on screen. always call after drawing to canvas/layer"""
         pygame.display.update()
 
-    def Path(self,A,B):
-        # if(type(A) is str): A = eval(A)
-        # if(type(B) is str): B = eval(B)
+    def Path(self,A,B,colour,thickness=2):
         """given two nodes, draws a line connecting them"""
         a = ( (A.X*self.XSCL) , (A.Y*self.YSCL) )#Scale X,Y values for screen
         b = ( (B.X*self.XSCL) , (B.Y*self.YSCL) )
-        pygame.draw.line(self.layer,BLACK,a,b,1)
+        pygame.draw.line(self.layer,colour,a,b,thickness)
 
     def SplitPoint(self,A,B):
-        # if(type(A) is str): A = eval(A)
-        # if(type(B) is str): B = eval(B)
         X = (A.X + B.X) / 2
         Y = (A.Y + B.Y) / 2
         return Location(X,Y,'s')
@@ -73,11 +73,11 @@ class GuiController():#Set flags on init to enable/disable certain rendering
             for n in node.neighbours:
                 self.Path(node,n)
     
-    def drawRoute(self,route):
+    def drawRoute(self,route,colour=(0,0,0),thickness=2):
         """Route should be a list of objects with X,Y attributes"""
         
         for i in range(len(route)-1) :
-            self.Path(route[i],route[i+1])
+            self.Path(route[i],route[i+1],colour,thickness+1)
 
     def Draw(self,Depot,Data,Vehicles):
         Locations = Data
@@ -86,9 +86,9 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         #self.doNeighbourConnections(Locations)
         for vehicle in Vehicles:
             if vehicle.route is not None:
-                self.drawRoute(vehicle.route)
+                self.drawRoute(vehicle.route,vehicle.colour,int(vehicle.id[2:]))
 
-        Locations.append(self.SplitPoint(Depot[0],Locations[2]))
+        #Locations.append(self.SplitPoint(Depot[0],Locations[2]))
 
         
 

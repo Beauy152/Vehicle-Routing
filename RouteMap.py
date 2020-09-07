@@ -3,7 +3,10 @@
 #RouteMap.py
 #from Location import Location
 from math import sqrt
+
 class Point():
+    """base class for location-based object. implements
+    standard X,Y,Coords attributes and representation"""
     def __init__(self,_X,_Y):
         self.X = _X
         self.Y = _Y
@@ -12,6 +15,7 @@ class Point():
         return "X:{0},Y:{1}".format(self.X,self.Y)
 
 class Neighbour(Point):
+    """inherits point class, extends with distance"""
     def __init__(self,_X,_Y,_D):
         super().__init__(_X,_Y)
         self.dist = _D
@@ -20,6 +24,7 @@ class Neighbour(Point):
         return "coords:({0},{1}), distance:{2}".format(self.X,self.Y,self.dist)
 
 class Location(Point):
+    """inherits point class"""
     def __init__(self,_X,_Y,_T='l'):
         super().__init__(_X,_Y)
         self.Type = _T
@@ -34,19 +39,6 @@ class Location(Point):
             results = results + "no neighbours."
         return results
 
-# class Location():
-#     def __init__(self, _X, _Y,_T='l'):
-#         self.Type = _T#default is l for location
-#         self.X = _X
-#         self.Y = _Y
-#         self.coords = "({0},{1})".format(_X,_Y)
-#         self.neighbours = []#[ ("x,y",dist), ... ]
-
-#     def __repr__(self):
-#         results = "Location: %s\n  Neighbours:\n" % self.coords
-#         for n in self.neighbours:
-#             results = results + "    %s : %s,\n" % (n[0],n[1])
-#         return results
 
 class RouteMap():
 

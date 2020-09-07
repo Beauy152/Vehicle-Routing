@@ -5,6 +5,7 @@
 from random import choice,randint
 from DeliveryAgent import DeliveryAgent
 from Packages import Package 
+from gui_functions import COL_LIST
 
 def TestLocations():
     """Returns location data from google or-tools example"""
@@ -33,7 +34,7 @@ def TestVehicles(n=5):
 
     for _id in range(n):
         capacity = randint(50,100)
-        agent = DeliveryAgent(_id,0,0,capacity)
+        agent = DeliveryAgent(_id,0,0,capacity,COL_LIST[_id])
         vehicles.append( agent )#pos=(0,0) : all vehicles start at depot
 
     return vehicles

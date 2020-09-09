@@ -1,8 +1,10 @@
 import pygame
+import pygame.gfxdraw
 from math import sqrt
 from RouteMap import Location
 #from DeliveryAgent import DeliveryAgent
 #Colours
+GREY = (  54,  54,  54)
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)
 BLUE = (  84, 131, 179)
@@ -22,7 +24,7 @@ COLOURS = {
 
 #An iterable list of colours. useful when assigning colours
 #to clusters of nodes
-COL_LIST = [BLUE,MINT,GREEN,YELLOW,ORANGE,PINK,RED,NIGHT]
+COL_LIST = [MINT,GREEN,YELLOW,ORANGE,PINK,RED,NIGHT]
 #node radius
 R = 8
 #Screen Dimensions
@@ -51,9 +53,10 @@ class GuiController():#Set flags on init to enable/disable certain rendering
 
     def Path(self,A,B,colour,thickness=2):
         """given two nodes, draws a line connecting them"""
-        a = ( (A.X*self.XSCL) , (A.Y*self.YSCL) )#Scale X,Y values for screen
-        b = ( (B.X*self.XSCL) , (B.Y*self.YSCL) )
-        pygame.draw.line(self.layer,colour,a,b,thickness)
+        a = ( int(A.X*self.XSCL) , int(A.Y*self.YSCL) )#Scale X,Y values for screen
+        b = ( int(B.X*self.XSCL) , int(B.Y*self.YSCL) )
+        pygame.gfxdraw.line(self.layer,a[0],a[1],b[0],b[1],colour)
+        #pygame.draw.line(self.layer,colour,a,b,thickness)
 
     def SplitPoint(self,A,B):
         X = (A.X + B.X) / 2
@@ -65,7 +68,8 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         for node in d:
             X = int(node.X*self.XSCL)
             Y = int(node.Y*self.YSCL)
-            pygame.draw.circle(self.layer,COLOURS[node.Type],(X,Y),R)
+            pygame.gfxdraw.filled_circle(self.layer,X,Y,R,COLOURS[node.Type])
+            #pygame.draw.circle(self.layer,COLOURS[node.Type],(X,Y),R)
             #COLOURS[node.value] : looks up colour based on value of node
     
     def doNeighbourConnections(self,Data):
@@ -77,11 +81,11 @@ class GuiController():#Set flags on init to enable/disable certain rendering
         """Route should be a list of objects with X,Y attributes"""
         
         for i in range(len(route)-1) :
-            self.Path(route[i],route[i+1],colour,thickness+1)
+            self.Path(route[i],route[i+1],colour,thickness+2)
 
     def Draw(self,Depot,Data,Vehicles):
         Locations = Data
-        self.layer.fill(WHITE)
+        self.layer.fill(GREY)#WHITE)
 
         #self.doNeighbourConnections(Locations)
         for vehicle in Vehicles:

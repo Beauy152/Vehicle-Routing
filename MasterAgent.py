@@ -82,7 +82,7 @@ class MasterRouter():
                 if event.type == pygame.QUIT:
                     done = True
                 #Draw
-                GC.Draw(self.world.warehouse,self.world.locations,vehicles[::-1])
+                GC.Draw(self.world.depot,self.world.locations,vehicles[::-1])
 
                 GC.update()
             clock.tick(10)#Limit FPS

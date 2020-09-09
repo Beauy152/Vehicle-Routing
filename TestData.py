@@ -2,7 +2,7 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #TestData.py
 
-from random import choice,randint
+from random import choice,randint,sample
 from DeliveryAgent import DeliveryAgent
 from Packages import Package 
 from gui_functions import COL_LIST
@@ -31,10 +31,10 @@ def TestVehicles(n=5):
     """if n is unspecifed, default is 5,
     n being the number of delivery agents"""
     vehicles = []
-
+    COLS = sample(COL_LIST,n)
     for _id in range(n):
         capacity = randint(50,100)
-        agent = DeliveryAgent(_id,0,0,capacity,COL_LIST[_id])
+        agent = DeliveryAgent(_id,0,0,capacity,COLS[_id])
         vehicles.append( agent )#pos=(0,0) : all vehicles start at depot
 
     return vehicles

@@ -16,12 +16,24 @@ class Point():
 
 class Neighbour(Point):
     """inherits point class, extends with distance"""
-    def __init__(self,_X,_Y,_D):
+    def __init__(self,_X,_Y,_D,_S):
         super().__init__(_X,_Y)
-        self.dist = _D
+        #Distance between initial location and neighbor
+        self.Distance = _D
+        #Pheremone level of path between location and neighbor
+        self.PheremoneLvl = 0
+        #Savings calculation of adding neighbor to route instead of starting from depot
+        self.Savings = _S
+        #Pheremone evaporation coefficient of path between location and neighbor
+        self.EvapCoefficient = None  #Need to figure out
+        
+
     
     def __repr__(self):
-        return "coords:({0},{1}), distance:{2}".format(self.X,self.Y,self.dist)
+        return "coords:({0},{1}), distance:{2}".format(self.X,self.Y,self.Distance)
+
+
+
 
 class Location(Point):
     """inherits point class"""
@@ -42,15 +54,15 @@ class Location(Point):
 
 class RouteMap():
 
-    def __init__(self, _warehouse, _locations):
+    def __init__(self, _Depot, _locations):
         
         #2d array of locations
         #Example: [[X1,Y1],[X2, Y2]] 
         self.locations = _locations
 
         #Single array of warehouse coordinates
-        self.warehouse = []
-        self.warehouse.append(Location(_warehouse[0],_warehouse[1],'d'))#_warehouse
+        self.Depot = []
+        self.Depot.append(Location(_Depot[0],_Depot[1],'d'))#_warehouse
 
         #Array of Location objects
         self.locations = self.InitLocations()
@@ -61,10 +73,23 @@ class RouteMap():
             newlocation = Location(l[0],l[1])
             for n in self.locations:
                 if n != l: 
-                    dist = round(sqrt( ((n[0] - l[0])**2) + ((n[1] - l[1])**2) ),2 )
-                    newlocation.neighbours.append( Neighbour(n[0],n[1],dist) )
+                    
+                    #Append new neighbor with distance and savings calculations
+                    newlocation.neighbours.append( 
+                        Neighbour(n[0],n[1],
+                        self.CalcDistance(l,n), 
+                        self.CalceSavings(l, n) )
+                        )
+
             world.append(newlocation)
         return world
+
+    def CalceSavings(self, aStartLoc, aEndLoc):
+        return (self.CalcDistance(self.Depot[0], aStartLoc) + self.CalcDistance(self.Depot[0], aEndLoc) - self.CalcDistance(aStartLoc, aEndLoc))
+
+
+    def CalcDistance(self, aStartLoc, aEndLoc):
+        return sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
 
     def __repr__(self):
         result = "["

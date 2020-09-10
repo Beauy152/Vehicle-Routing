@@ -7,12 +7,13 @@ import Packages as _packages_
 from MasterAgent import MasterRouter
 from random import sample, randint
 
-from tkinter import Button,Spinbox,Tk,Label
+from tkinter import Button,Spinbox,Tk,Label,Checkbutton,IntVar
 
 
-def sim_main(num_locations,num_vehicles):
+def sim_main(num_locations,num_vehicles,useGoogleData):
     #Get list of Locations
-    Locations = TestData.TestLocations()
+    if(useGoogleData) : Locations = TestData.TestLocations()
+    else: Locations = TestData.RandomLocations(num_locations)
 
     #Create Master Router
     Master = MasterRouter()
@@ -79,16 +80,24 @@ def print_vals():
     n_vehc = int(num_vehc.get())
     print("num locs: %s" % n_locs)
     print("num vehc: %s" % n_vehc)
+    #print("usegoogle: %s" % useGoogleData.get())
     root.destroy()
-    sim_main(n_locs,n_vehc)
+    sim_main(n_locs,n_vehc,useGoogleData.get())
 
 num_locs_label = Label(root,text="Number of Locations").pack()
-num_locs = Spinbox(root,from_=2,to=20,width=10,state="disabled")
+num_locs = Spinbox(root,from_=2,to=20,width=10,textvariable=IntVar(value=16))
 num_locs.pack()
 
 num_vehc_label = Label(root,text="Number of Vehicles").pack()
 num_vehc = Spinbox(root,from_=1,to=10,width=10)
 num_vehc.pack()
+
+useGoogleData = IntVar()
+useGoogleDataCheck = Checkbutton(root,variable=useGoogleData,
+                                text="Use Google OR-Tools test data.",
+                                onvalue=True,offvalue=False)
+useGoogleDataCheck.select()
+useGoogleDataCheck.pack()
 
 Button(root,text="Done",width=10,command=print_vals).pack()
 

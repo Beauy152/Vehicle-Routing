@@ -27,6 +27,17 @@ def TestLocations():
             (0  , 640), # location 15
             (798, 640)] # location 16
 
+def RandomLocations(n):
+    locations = []
+
+    for _ in range(n):
+        locations.append(
+            (randint(0,1000) ,randint(0,1000))
+        )
+    return locations
+
+
+
 def TestVehicles(n=5):
     """if n is unspecifed, default is 5,
     n being the number of delivery agents"""

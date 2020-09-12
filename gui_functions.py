@@ -75,7 +75,7 @@ class GuiController():#Set flags on init to enable/disable certain rendering
     def doNeighbourConnections(self,Data):
         for node in Data:
             for n in node.neighbours:
-                self.Path(node,n)
+                self.Path(node,n,BLACK)
     
     def drawRoute(self,route,colour=(0,0,0),thickness=2):
         """Route should be a list of objects with X,Y attributes"""

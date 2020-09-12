@@ -2,9 +2,8 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #Ant.py
 
+from RouteMap import Location, Neighbour
 
-from RouteMap import Location
-from RouteMap import Neighbour
 class Ant():
     def __init__(self, aLocation : Location, aPherDelta, aAntCapacity):
         #Ants current location
@@ -28,6 +27,7 @@ class Ant():
         #Method of movement calculation
         lBestMove = None
         for lNeighbor in self.Location.neighbours:
+            pass
             #IMPLEMENT FORMULA FOR FITNESS FUNCTION
             #UPDATE BEST MOVE BASED ON PROBABILITY OUTPUT
 
@@ -36,7 +36,7 @@ class Ant():
         
     def UpdateLocal(self): 
         #Update local pheremone 
-        self.BestNeighbor.SetPheremone(((1 - self.BestNeighbor.GetDecay()) * self.BestNeighbor.GetPherLvl() + self.PherDelta))
+        self.BestNeighbor.SetPheremone( ( (1 - self.BestNeighbor.GetDecay() ) * self.BestNeighbor.GetPherLvl() + self.PherDelta))
 
 
     def UpdateBest(self):

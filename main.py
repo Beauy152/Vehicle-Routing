@@ -50,12 +50,14 @@ def sim_main(num_locations,num_vehicles,useGoogleData):
 
 
     #For testing purposes#
-    for vehicle in Vehicles:
-        temp_route = [Master.world.depot[0]]
-        temp_route.extend(sample(Master.world.locations,randint(1,8)))
-        temp_route.append(Master.world.depot[0])
-        #Vehicles[0].route = temp_route#
-        vehicle.route = temp_route
+    # for vehicle in Vehicles:
+    #     temp_route = [Master.world.depot[0]]
+    #     temp_route.extend(sample(Master.world.locations,randint(1,8)))
+    #     temp_route.append(Master.world.depot[0])
+    #     #Vehicles[0].route = temp_route#
+    #     vehicle.route = temp_route
+
+    Master.RouteAlgorithm("ACO",Vehicles)
 
     Master.Draw(Locations,Vehicles)
     #Testline#

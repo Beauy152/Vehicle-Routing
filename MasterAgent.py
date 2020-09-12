@@ -5,6 +5,7 @@
 from gui_functions import *
 from HelperFunctions import ParseKIF
 from RouteMap import RouteMap as Map
+from ACO import ACO
 
 class MasterRouter():
     KB = {} #Knowledge base. vehicle information
@@ -13,11 +14,14 @@ class MasterRouter():
         self.id = "m_"
         self.packages = None
 
-    def RouteAlgorithm(self):
+    def RouteAlgorithm(self,alg,agents):
         """Route finding algorithm goes here.
         a modular approach allows us to easily 
         implement multiple Routing methods"""
-        pass
+        if alg.lower() == "aco": 
+            aco = ACO(self.world,agents)
+            #aco.Optimize()
+            aco.AllocateRoutes()
 
     def SetWorld(self,depot,locations):
         self.world = Map(depot,locations)

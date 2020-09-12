@@ -12,10 +12,10 @@ class ACO():
 
         #Delivery Agents
         self.fAgents = aAgents
-        #Ant colony
-        self.fColony = self.InitColony(aAgents)
         #World object
         self.fMap = aMap
+        #Ant colony
+        self.fColony = self.InitColony(aAgents)
         #Temporary termination condition
         self.RouteFound = False
         #Current Best Ant
@@ -33,7 +33,7 @@ class ACO():
                 #Calculate individual ant movements
                 lAnt.CalculateMove()
                 #Apply local pheremone update
-                lAnt.LocalUpdate()
+                lAnt.UpdateLocal()
             #Apply global pheremone update
             self.UpdateGlobal()
 
@@ -46,13 +46,13 @@ class ACO():
         lAnts = []
         for lAgent in aAgents:
             #Append new ant based on available agents
-            lAnts.append(Ant(self.fMap.Depot[0]), 10, lAgent.GetCapacity())
+            lAnts.append( Ant(self.fMap.depot[0], 10, lAgent.capacity ))
 
         return lAnts
 
     def ResetColony(self):
         for lAnt in self.fColony:
-            lAnt.Location = self.fMap.Depot[0]
+            lAnt.Location = self.fMap.depot[0]
 
 
     def AllocateRoutes(self):
@@ -60,7 +60,7 @@ class ACO():
         lRoutedAgents = []
         for lIndex, lAnt in enumerate(self.fColony):
             #Allocate each agent with best route of corresponding ant
-            self.fAgents[lIndex].SetRoute(lAnt.BestRoute())
+            self.fAgents[lIndex].route = lAnt.GetBestRoute()
             #Append to updated agent array
             lRoutedAgents.append(self.fAgents[lIndex])
 

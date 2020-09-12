@@ -26,8 +26,17 @@ class Neighbour(Point):
         #Savings calculation of adding neighbor to route instead of starting from depot
         self.Savings = _S
         #Pheremone evaporation coefficient of path between location and neighbor
-        self.EvapCoefficient = None  #Need to figure out
-        
+        self.Decay = None  #Need to figure out
+
+    
+    def SetPheremone(self, aNum):
+        self.PheremoneLvl = aNum
+
+    def GetDecay(self):
+        return self.Decay
+
+    def GetPherLvl(self):
+        return self.PheremoneLvl
 
     
     def __repr__(self):

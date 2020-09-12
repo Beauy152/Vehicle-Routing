@@ -2,6 +2,7 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #ACO.py
 from RouteMap import RouteMap
+from RouteMap import Neighbour
 from Ant import Ant
 from DeliveryAgent import DeliveryAgent
 
@@ -12,11 +13,13 @@ class ACO():
         #Delivery Agents
         self.fAgents = aAgents
         #Ant colony
-        self.fAnts = self.InitColony(aAgents)
+        self.fColony = self.InitColony(aAgents)
         #World object
         self.fMap = aMap
         #Temporary termination condition
         self.RouteFound = False
+        #Current Best Ant
+        self.BestAnt = None
 
 
 
@@ -26,7 +29,7 @@ class ACO():
             #Initialize colony at depot
             self.ResetColony()
 
-            for lAnt in self.fAnts:
+            for lAnt in self.fColony:
                 #Calculate individual ant movements
                 lAnt.CalculateMove()
                 #Apply local pheremone update
@@ -48,14 +51,14 @@ class ACO():
         return lAnts
 
     def ResetColony(self):
-        for lAnt in self.fAnts:
+        for lAnt in self.fColony:
             lAnt.Location = self.fMap.Depot[0]
 
 
     def AllocateRoutes(self):
 
         lRoutedAgents = []
-        for lIndex, lAnt in enumerate(self.fAnts):
+        for lIndex, lAnt in enumerate(self.fColony):
             #Allocate each agent with best route of corresponding ant
             self.fAgents[lIndex].SetRoute(lAnt.BestRoute())
             #Append to updated agent array
@@ -64,6 +67,26 @@ class ACO():
         return lRoutedAgents
         
     def UpdateGlobal(self):
-        #Method of global pheremone update
+        #Sort for the most efficient route
+        self.GetBestColRoute()
+
+        for lNeighbor in self.BestAnt.GetRoute():
+            #Calculate global pheremone deposition
+            lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPheremoneLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
+
         
-        #IMPLEMENT GLOBAL UPDATE FORMULA
+
+        
+    def GetBestColRoute(self):
+        #NOTE TO SELF: THE MOST EFFICIENT ROUTE WILL NOT ALWAYS BE THE MOST EFFICIENT (DOES NOT TAKE INTO ACCOUNT PACKAGES COLLECTED)
+        lBestCost = 1000
+        for lAnt in self.fColony:
+            #Check if each ant is more efficient
+            if (lAnt.GetDelta() <= lBestCost):
+                #Update Best ant
+                self.BestAnt = lAnt
+                #Update best cost
+                lBestCost = lAnt.GetDelta()
+
+
+

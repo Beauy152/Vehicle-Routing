@@ -16,7 +16,7 @@ class Point():
 
 class Neighbour(Point):
     """inherits point class, extends with distance"""
-    def __init__(self,_X,_Y,_D,_S):
+    def __init__(self,_X,_Y,_D,_S, _P,_L):
         super().__init__(_X,_Y)
         #Distance between initial location and neighbor
         self.Distance = _D
@@ -27,8 +27,15 @@ class Neighbour(Point):
         self.Savings = _S
         #Pheremone evaporation coefficient of path between location and neighbor
         self.Decay = None  #Need to figure out
+        #Score of attractiveness before probability
+        self.Score = None
+        #Probability of selection amongst other neighbors
+        self.Probability = None
+        #Weight of package being delivered to neighbor
+        self.PackageWeight = _P
+        #Actual location object so agent can move to it
+        self.ActualLocation = _L
 
-    
     def SetPheremone(self, aNum):
         self.PheremoneLvl = aNum
 
@@ -37,8 +44,26 @@ class Neighbour(Point):
 
     def GetPherLvl(self):
         return self.PheremoneLvl
-
     
+    def GetLocation(self):
+        return self.ActualLocation
+
+    def CalculateScore(self):
+        #Calculates individual score based off distance heuristic, pheremone level and savings
+        self.Score = ((1 / self.Distance) * (self.PheremoneLvl) * (self.Savings))
+
+    def CalculateProbability(self, aSum):
+        #Calculates probability of selection
+        self.Probability = (self.Score / aSum)
+
+    def GetScore(self):
+        return self.Score
+    def GetProbability(self):
+        return self.Probability
+
+    def GetPackageWeight(self):
+        return self.PackageWeight
+        
     def __repr__(self):
         return "coords:({0},{1}), distance:{2}".format(self.X,self.Y,self.Distance)
 
@@ -49,6 +74,7 @@ class Location(Point):
         super().__init__(_X,_Y)
         self.Type = _T
         self.neighbours = []
+        self.Probabilities = []
 
     def __repr__(self):
         results = "Location: %s\n  Neighbours:\n" % str(self.coords)
@@ -58,6 +84,30 @@ class Location(Point):
         else:
             results = results + "no neighbours."
         return results
+
+    def CalculateScores(self):
+        #Calculates individual scores for each neighbor
+        for lNeighbor in self.neighbours:
+            lNeighbor.CalculateScore()
+
+    def ScoreSum(self):
+        #Calculates sum of scores over each neighbor
+        lSum = 0
+        for lNeighbor in self.neighbours:
+            lSum += lNeighbor.GetScore()
+    
+    def CalculateProbabilities(self):
+        #Calculates individual probabilities for each neighbor
+        for lNeighbor in self.neighbours:
+            lNeighbor.CalculateProbability(self.ScoreSum())
+            self.Probabilities.append(lNeighbor.GetProbability())
+
+    def GetNeighbors(self):
+        return self.neighbours
+    def GetProbabilities(self):
+        return self.Probabilities
+
+
 
 class RouteMap():
 

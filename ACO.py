@@ -28,12 +28,15 @@ class ACO():
         while self.RouteFound == False:
             #Initialize colony at depot
             self.ResetColony()
-
+            #Establish a memory so other ants do not visit locations by previous ant routes in current loop
+            lVisited = []
             for lAnt in self.fColony:
-                #Calculate individual ant movements
-                lAnt.CalculateMove()
-                #Apply local pheremone update
-                lAnt.UpdateLocal()
+                #Calculate individual ant route
+                lAnt.FindRoute(lVisited)
+                #Append visited memory
+                for lLocation in lAnt.GetBestRoute():
+                    lVisited.append(lLocation)
+
             #Apply global pheremone update
             self.UpdateGlobal()
 
@@ -46,17 +49,18 @@ class ACO():
         lAnts = []
         for lAgent in aAgents:
             #Append new ant based on available agents
-            lAnts.append( Ant(self.fMap.depot[0], 10, lAgent.capacity ))
+            lAnts.append( Ant(self.fMap.depot[0], 50, lAgent.capacity ))
 
         return lAnts
-
+ 
     def ResetColony(self):
+        #Set each ant back at depot
         for lAnt in self.fColony:
             lAnt.Location = self.fMap.depot[0]
 
 
     def AllocateRoutes(self):
-
+        
         lRoutedAgents = []
         for lIndex, lAnt in enumerate(self.fColony):
             #Allocate each agent with best route of corresponding ant
@@ -74,9 +78,7 @@ class ACO():
             #Calculate global pheremone deposition
             lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPheremoneLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
 
-        
 
-        
     def GetBestColRoute(self):
         #NOTE TO SELF: THE MOST EFFICIENT ROUTE WILL NOT ALWAYS BE THE MOST EFFICIENT (DOES NOT TAKE INTO ACCOUNT PACKAGES COLLECTED)
         lBestCost = 1000

@@ -23,7 +23,7 @@ class Ant():
         #Current route cost
         self.RouteCost = 0
         #Best Neighbor at current location
-        self.BestNeighbor = None
+        self.BestNeighbor = None#min(aLocation.neighbours,key=lambda x:x.Distance) #None
         #Boolean indicating more locations to visit
         self.MoreLocations = True
 
@@ -41,14 +41,21 @@ class Ant():
         #Check if any valid neighbors
         if len(lNeighbors) > 0:
             #Choose random neighbor based on probability weights
-            self.BestNeighbor = random.choices(self.Location.GetNeighbors(), self.Location.GetProbabilities(), k=1)
+            #TODO BUG!!! randomly, the number of probabilies increases. im guessing somewhere theyre being re-appende
+            self.BestNeighbor = random.choices(self.Location.GetNeighbors(), weights=self.Location.GetProbabilities(), k=1)
             #Change location
+            #NOTE random.choices returns a list, so we need to use the 0th index
+            self.BestNeighbor = self.BestNeighbor[0]
+
             self.Location = self.BestNeighbor.GetLocation()
         else:
             #Mark no more locations
             self.MoreLocations = False
             #Send back to warehouse
-            self.CurrentRoute.append(self.CurrentRoute[0])
+
+            #NOTE instead of passing in a refernce to the depot for each ant
+            #we can just add it the the start&end of the route once finished.
+            #self.CurrentRoute.append(self.CurrentRoute[0])
             
 
     def UpdateLocal(self): 

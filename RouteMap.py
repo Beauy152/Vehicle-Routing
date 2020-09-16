@@ -14,10 +14,10 @@ class Point():
     def __repr__(self):
         return "X:{0},Y:{1}".format(self.X,self.Y)
 
-class Neighbour(Point):
+class Neighbour():
     """inherits point class, extends with distance"""
-    def __init__(self,_X,_Y,_D,_S, _P,_L):
-        super().__init__(_X,_Y)
+    def __init__(self,_L,_D,_S):#, _P,):
+        self.actual_location = _L
         #Distance between initial location and neighbor
         self.Distance = _D
         #perhaps these can be inherited by classes for specific algorithms
@@ -26,15 +26,14 @@ class Neighbour(Point):
         #Savings calculation of adding neighbor to route instead of starting from depot
         self.Savings = _S
         #Pheremone evaporation coefficient of path between location and neighbor
-        self.Decay = None  #Need to figure out
+        self.Decay = 0.25#None  #Need to figure out
         #Score of attractiveness before probability
         self.Score = None
         #Probability of selection amongst other neighbors
         self.Probability = None
         #Weight of package being delivered to neighbor
-        self.PackageWeight = _P
-        #Actual location object so agent can move to it
-        self.ActualLocation = _L
+        #self.PackageWeight = _P
+
 
     def SetPheremone(self, aNum):
         self.PheremoneLvl = aNum
@@ -46,7 +45,7 @@ class Neighbour(Point):
         return self.PheremoneLvl
     
     def GetLocation(self):
-        return self.ActualLocation
+        return self.actual_location
 
     def CalculateScore(self):
         #Calculates individual score based off distance heuristic, pheremone level and savings
@@ -54,27 +53,35 @@ class Neighbour(Point):
 
     def CalculateProbability(self, aSum):
         #Calculates probability of selection
+        if self.Score==0 and aSum==0:return 0
         self.Probability = (self.Score / aSum)
 
     def GetScore(self):
+        if self.Score is None: self.CalculateScore()
         return self.Score
+
     def GetProbability(self):
+
         return self.Probability
 
     def GetPackageWeight(self):
-        return self.PackageWeight
+        #if len(self.actual_location.packages) < 1: return 0
+        return sum(p.weight for p in self.actual_location.packages)#self.PackageWeight
         
     def __repr__(self):
-        return "coords:({0},{1}), distance:{2}".format(self.X,self.Y,self.Distance)
+        return "coords:({0},{1}), distance:{2}".format(self.actual_location.X, \
+                                                        self.actual_location.Y, \
+                                                        self.Distance)
 
 
 class Location(Point):
     """inherits point class"""
-    def __init__(self,_X,_Y,_T='l'):
+    def __init__(self,_X,_Y,_Packages,_T='l'):
         super().__init__(_X,_Y)
         self.Type = _T
         self.neighbours = []
         self.Probabilities = []
+        self.packages = _Packages
 
     def __repr__(self):
         results = "Location: %s\n  Neighbours:\n" % str(self.coords)
@@ -94,13 +101,23 @@ class Location(Point):
         #Calculates sum of scores over each neighbor
         lSum = 0
         for lNeighbor in self.neighbours:
-            lSum += lNeighbor.GetScore()
+            lSum = lSum + lNeighbor.GetScore()
+        return lSum
     
     def CalculateProbabilities(self):
+        #NOTE
+        #If this is the probability of a neighbour being selected, then shouldn't it be:
+        # 1/n, where n is the number of neighbours? in which case, each neighbour is equally likely to be chosen?
+        #or is weighted based on distance...
+        ###this is just for testing###
+        temp = []
+        for n in self.neighbours:
+            temp.append(1/len(self.neighbours))
+        self.Probabilities = temp
         #Calculates individual probabilities for each neighbor
-        for lNeighbor in self.neighbours:
-            lNeighbor.CalculateProbability(self.ScoreSum())
-            self.Probabilities.append(lNeighbor.GetProbability())
+        # for lNeighbor in self.neighbours:
+        #     lNeighbor.CalculateProbability(self.ScoreSum())
+        #     self.Probabilities.append(lNeighbor.GetProbability())
 
     def GetNeighbors(self):
         return self.neighbours
@@ -111,17 +128,23 @@ class Location(Point):
 
 class RouteMap():
 
-    def __init__(self, _Depot, _locations):
+    def __init__(self,_locations, _packages):
         #2d array of locations
         #Example: [[X1,Y1],[X2, Y2]] 
         self.locations = []
         #convert location tuple to location objects
-        for l in _locations: self.locations.append(Location(l[0],l[1]) )
+        for l in _locations: 
+            temp_packages = [p for p in _packages if p.location == l ]
+            #print("temp packages: %s" % temp_packages)
+            self.locations.append(Location(l[0],l[1],temp_packages) )
+        
+        #set first item in array as type depot
+        self.locations[0].Type = 'd'
 
         #Single array of warehouse coordinates
         self.depot = []
-        self.depot.append(Location(_Depot[0],_Depot[1],'d'))#_warehouse
-
+        self.depot.append(self.locations[0])#_warehouse
+        #depot_neighbours 
         #Array of Location objects
         self.InitLocations()
 
@@ -134,10 +157,11 @@ class RouteMap():
                 if n != l:
                     #Append new neighbor with distance and savings calculations
                     l.neighbours.append( 
-                        Neighbour(n.X,n.Y,
+                        Neighbour(n,
                             self.CalcDistance(l,n), 
                             self.CalcSavings(l, n) 
                         ))
+            #l.CalculateProbabilities()
 
 
     def CalcSavings(self, aStartLoc, aEndLoc):

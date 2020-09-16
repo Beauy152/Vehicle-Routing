@@ -18,9 +18,6 @@ def sim_main(num_locations,num_vehicles,useGoogleData):
     #Create Master Router
     Master = MasterRouter()
 
-    #initialise master's world view 
-    Master.SetWorld(Locations[0],Locations[1:])
-
     #Create Each Vehicle
     #Each vehicle has a referece to the master router, this is essentially
     #the same as having the contact details of the master, this is used for comms.
@@ -44,6 +41,9 @@ def sim_main(num_locations,num_vehicles,useGoogleData):
 
     #Send package list to master
     Master.SetPackages(Packages)
+
+    #initialise master's world view 
+    Master.SetWorld(Locations)
 
     #Test Line Show combined weight of packages
     print ("sum of package weights:%s" % sum(package.weight for package in Packages) )

@@ -20,11 +20,11 @@ class MasterRouter():
         implement multiple Routing methods"""
         if alg.lower() == "aco": 
             aco = ACO(self.world,agents)
-            #aco.Optimize()
+            aco.Optimize()
             aco.AllocateRoutes()
 
-    def SetWorld(self,depot,locations):
-        self.world = Map(depot,locations)
+    def SetWorld(self,locations):
+        self.world = Map(locations,self.packages)
 
     def SumCapacities(self):
         """any KB entry with prefix v_ is a vehicle, sum each capacity attribute"""

@@ -92,5 +92,5 @@ class Ant():
 
     def GetRouteCost(self):
         return self.RouteCost
-        
+
         

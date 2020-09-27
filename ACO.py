@@ -20,12 +20,17 @@ class ACO():
         self.RouteFound = False
         #Current Best Ant
         self.BestAnt = None
+        #Best route cost
+        self.BestCost = None
 
 
 
     def Optimize(self):
         #Temporary termination condition (main loop)
+        lCount = 0
+
         while self.RouteFound == False:
+            lTempBest = self.BestCost
             #Initialize colony at depot
             self.ResetColony()
             #Establish a memory so other ants do not visit locations by previous ant routes in current loop
@@ -34,11 +39,20 @@ class ACO():
                 #Calculate individual ant route
                 lAnt.FindRoute(lVisited)
                 #Append visited memory
-                for lLocation in lAnt.GetBestRoute():
+                for lLocation in lAnt.GetRoute():
                     lVisited.append(lLocation)
 
             #Apply global pheremone update
             self.UpdateGlobal()
+
+            #Check if best route cost hasnt changed in x iterations (10 for now)
+            if lTempBest == self.BestCost:
+                lCount += 1
+                if (lCount > 10):
+                    #Terminate if it hasn't changed in x iterations
+                    self.RouteFound = True
+            else:
+                self.lCount = 0
 
         #Allocate agents with routes
         return self.AllocateRoutes()
@@ -87,8 +101,10 @@ class ACO():
             if (lAnt.GetDelta() <= lBestCost):
                 #Update Best ant
                 self.BestAnt = lAnt
-                #Update best cost
+                #Update local current cost
                 lBestCost = lAnt.GetDelta()
+                #Update best cost for colony
+                self.BestCost = lBestCost
 
 
 

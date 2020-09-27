@@ -110,14 +110,17 @@ class Location(Point):
         # 1/n, where n is the number of neighbours? in which case, each neighbour is equally likely to be chosen?
         #or is weighted based on distance...
         ###this is just for testing###
-        temp = []
-        for n in self.neighbours:
-            temp.append(1/len(self.neighbours))
-        self.Probabilities = temp
+        # temp = []
+        # for n in self.neighbours:
+        #     temp.append(1/len(self.neighbours))
+        # self.Probabilities = temp
         #Calculates individual probabilities for each neighbor
-        # for lNeighbor in self.neighbours:
-        #     lNeighbor.CalculateProbability(self.ScoreSum())
-        #     self.Probabilities.append(lNeighbor.GetProbability())
+        lCurrentProb = []
+        for lNeighbor in self.neighbours:
+            lNeighbor.CalculateProbability(self.ScoreSum())
+            lCurrentProb.append(lNeighbor.GetProbability())
+
+        self.Probabilities = lCurrentProb
 
     def GetNeighbors(self):
         return self.neighbours
@@ -162,6 +165,8 @@ class RouteMap():
                             self.CalcSavings(l, n) 
                         ))
             #l.CalculateProbabilities()
+
+
 
 
     def CalcSavings(self, aStartLoc, aEndLoc):

@@ -55,7 +55,7 @@ class Ant():
 
             #NOTE instead of passing in a refernce to the depot for each ant
             #we can just add it the the start&end of the route once finished.
-            #self.CurrentRoute.append(self.CurrentRoute[0])
+            self.CurrentRoute.append(self.CurrentRoute[0])
             
 
     def UpdateLocal(self): 

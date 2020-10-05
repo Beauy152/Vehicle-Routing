@@ -20,8 +20,8 @@ class MasterRouter():
         implement multiple Routing methods"""
         if alg.lower() == "aco": 
             aco = ACO(self.world,agents)
-            aco.Optimize()
-            aco.AllocateRoutes()
+            return aco.Optimize()
+            
 
     def SetWorld(self,locations):
         self.world = Map(locations,self.packages)

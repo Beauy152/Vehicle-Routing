@@ -57,7 +57,7 @@ def sim_main(num_locations,num_vehicles,useGoogleData):
     #     #Vehicles[0].route = temp_route#
     #     vehicle.route = temp_route
 
-    Master.RouteAlgorithm("ACO",Vehicles)
+    Vehicles = Master.RouteAlgorithm("ACO",Vehicles)
 
     Master.Draw(Locations,Vehicles)
     #Testline#

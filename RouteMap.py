@@ -22,7 +22,7 @@ class Neighbour():
         self.Distance = _D
         #perhaps these can be inherited by classes for specific algorithms
         #Pheremone level of path between location and neighbor
-        self.PheremoneLvl = 0
+        self.PheremoneLvl = 1
         #Savings calculation of adding neighbor to route instead of starting from depot
         self.Savings = _S
         #Pheremone evaporation coefficient of path between location and neighbor
@@ -49,7 +49,9 @@ class Neighbour():
 
     def CalculateScore(self):
         #Calculates individual score based off distance heuristic, pheremone level and savings
-        self.Score = ((1 / self.Distance) * (self.PheremoneLvl) * (self.Savings))
+        #self.Score = ((1 / self.Distance) * (self.PheremoneLvl) * (self.Savings))
+        self.Score = ((1 / self.Distance) * (self.PheremoneLvl))
+
 
     def CalculateProbability(self, aSum):
         #Calculates probability of selection
@@ -64,10 +66,21 @@ class Neighbour():
 
         return self.Probability
 
+    def GetDist(self):
+        return self.Distance
+
     def GetPackageWeight(self):
         #if len(self.actual_location.packages) < 1: return 0
         return sum(p.weight for p in self.actual_location.packages)#self.PackageWeight
-        
+    
+
+    def GetX(self):
+        return self.actual_location.X
+
+    def GetY(self):
+        return self.actual_location.Y
+
+
     def __repr__(self):
         return "coords:({0},{1}), distance:{2}".format(self.actual_location.X, \
                                                         self.actual_location.Y, \
@@ -82,6 +95,8 @@ class Location(Point):
         self.neighbours = []
         self.Probabilities = []
         self.packages = _Packages
+        self.X = _X
+        self.Y = _Y
 
     def __repr__(self):
         results = "Location: %s\n  Neighbours:\n" % str(self.coords)

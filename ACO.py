@@ -34,7 +34,7 @@ class ACO():
             #Initialize colony at depot
             self.ResetColony()
             #Establish a memory so other ants do not visit locations by previous ant routes in current loop
-            lVisited = []
+            lVisited = [Neighbour(self.fMap.depot[0], 0, 0)]
             for lAnt in self.fColony:
                 #Calculate individual ant route
                 lAnt.FindRoute(lVisited)
@@ -90,7 +90,7 @@ class ACO():
 
         for lNeighbor in self.BestAnt.GetRoute():
             #Calculate global pheremone deposition
-            lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPheremoneLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
+            lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPherLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
 
 
     def GetBestColRoute(self):

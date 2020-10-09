@@ -53,14 +53,14 @@ class GuiController():#Set flags on init to enable/disable certain rendering
 
     def Path(self,A,B,colour,thickness=2):
         """given two nodes, draws a line connecting them"""
-        a = ( int(A.X*self.XSCL) , int(A.Y*self.YSCL) )#Scale X,Y values for screen
-        b = ( int(B.X*self.XSCL) , int(B.Y*self.YSCL) )
+        a = ( int(A.GetX()*self.XSCL) , int(A.GetY()*self.YSCL) )#Scale X,Y values for screen
+        b = ( int(B.GetX()*self.XSCL) , int(B.GetY()*self.YSCL) )
         pygame.gfxdraw.line(self.layer,a[0],a[1],b[0],b[1],colour)
         #pygame.draw.line(self.layer,colour,a,b,thickness)
 
     def SplitPoint(self,A,B):
-        X = (A.X + B.X) / 2
-        Y = (A.Y + B.Y) / 2
+        X = (A.GetX() + B.GetX()) / 2
+        Y = (A.GetY() + B.GetY()) / 2
         return Location(X,Y,'s')
 
     def doNodes(self,d):

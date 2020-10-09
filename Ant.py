@@ -15,7 +15,7 @@ class Ant():
         #Current weight taken on route
         self.CurrentWeight = 0
         #Best Route Cost
-        self.BestCost = None
+        self.BestCost = 999999
         #Array of locations in best route
         self.BestRoute = []
         #Array of locations in current route
@@ -27,27 +27,37 @@ class Ant():
         #Boolean indicating more locations to visit
         self.MoreLocations = True
 
-    def CalculateMove(self):
+        self.LocalVisited = []
+
+    def CalculateMove(self, aVisited):
+        
         #Calculate individual scores
         self.Location.CalculateScores()
         #Calculate individual probabilities
         self.Location.CalculateProbabilities()
 
         lNeighbors = self.Location.GetNeighbors()
-        for lNeighbor in lNeighbors:
-            if (lNeighbor.GetPackageWeight() + self.CurrentWeight) > self.AntCapacity:
+        for index, lNeighbor in enumerate(lNeighbors):
+            if ((lNeighbor.GetPackageWeight() + self.CurrentWeight) > self.AntCapacity) or (self.SameLoc(lNeighbor, aVisited)) or (self.SameLoc(lNeighbor, self.LocalVisited)):
                 lNeighbors.remove(lNeighbor)
+                self.Location.Probabilities.pop(index)
                 
         #Check if any valid neighbors
         if len(lNeighbors) > 0:
             #Choose random neighbor based on probability weights
             #TODO BUG!!! randomly, the number of probabilies increases. im guessing somewhere theyre being re-appende
-            self.BestNeighbor = random.choices(self.Location.GetNeighbors(), weights=self.Location.GetProbabilities(), k=1)
+            self.BestNeighbor = random.choices(lNeighbors, weights=self.Location.GetProbabilities(), k=1)
             #Change location
             #NOTE random.choices returns a list, so we need to use the 0th index
             self.BestNeighbor = self.BestNeighbor[0]
 
             self.Location = self.BestNeighbor.GetLocation()
+            self.CurrentWeight += self.BestNeighbor.GetPackageWeight()
+
+            self.LocalVisited.append(self.BestNeighbor)
+            self.CurrentRoute.append(self.BestNeighbor)
+            self.RouteCost += self.BestNeighbor.GetDist()
+
         else:
             #Mark no more locations
             self.MoreLocations = False
@@ -55,7 +65,8 @@ class Ant():
 
             #NOTE instead of passing in a refernce to the depot for each ant
             #we can just add it the the start&end of the route once finished.
-            self.CurrentRoute.append(self.CurrentRoute[0])
+            if len(self.CurrentRoute) > 0:
+                self.CurrentRoute.append(self.CurrentRoute[0])
             
 
     def UpdateLocal(self): 
@@ -72,14 +83,21 @@ class Ant():
             self.BestRoute = self.CurrentRoute
 
     def FindRoute(self, aVisited):
-
+        self.CurrentRoute.append(aVisited[0])
         while self.MoreLocations:
             #Calculate move on current iteration
-            self.CalculateMove()
+            self.CalculateMove(aVisited)
             #Update local pheremone
             self.UpdateLocal()
         #Update best current route if better
         self.UpdateBest()
+
+    def SameLoc(self, aNeighbor, aList):
+        for location in aList:
+            if aNeighbor.GetX() == location.GetX() and aNeighbor.GetY() == location.GetY():
+                return True
+        return False
+
 
     def GetDelta(self):
         return self.PherDelta

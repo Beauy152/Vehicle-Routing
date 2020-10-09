@@ -120,16 +120,7 @@ class Location(Point):
         return lSum
     
     def CalculateProbabilities(self):
-        #NOTE
-        #If this is the probability of a neighbour being selected, then shouldn't it be:
-        # 1/n, where n is the number of neighbours? in which case, each neighbour is equally likely to be chosen?
-        #or is weighted based on distance...
-        ###this is just for testing###
-        # temp = []
-        # for n in self.neighbours:
-        #     temp.append(1/len(self.neighbours))
-        # self.Probabilities = temp
-        #Calculates individual probabilities for each neighbor
+
         lCurrentProb = []
         for lNeighbor in self.neighbours:
             lNeighbor.CalculateProbability(self.ScoreSum())
@@ -139,6 +130,10 @@ class Location(Point):
 
     def GetNeighbors(self):
         return self.neighbours
+
+    def RemoveNeighbour(self, aNeighbour):
+        self.neighbours.remove(aNeighbour)
+        
     def GetProbabilities(self):
         return self.Probabilities
 

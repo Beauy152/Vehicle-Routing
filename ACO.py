@@ -37,10 +37,10 @@ class ACO():
             lVisited = [Neighbour(self.fMap.depot[0], 0, 0)]
             for lAnt in self.fColony:
                 #Calculate individual ant route
-                lAnt.FindRoute(lVisited)
+                lAnt.FindRoute(lVisited, self.fMap)
                 #Append visited memory
-                for lLocation in lAnt.GetRoute():
-                    lVisited.append(lLocation)
+                # for lLocation in lAnt.GetRoute():
+                #     lVisited.append(lLocation)
 
             #Apply global pheremone update
             self.UpdateGlobal()
@@ -48,7 +48,7 @@ class ACO():
             #Check if best route cost hasnt changed in x iterations (10 for now)
             if lTempBest == self.BestCost:
                 lCount += 1
-                if (lCount > 10):
+                if (lCount > 100):
                     #Terminate if it hasn't changed in x iterations
                     self.RouteFound = True
             else:
@@ -90,7 +90,8 @@ class ACO():
 
         for lNeighbor in self.BestAnt.GetRoute():
             #Calculate global pheremone deposition
-            lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPherLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
+            if self.BestAnt.GetRouteCost() > 0:
+                lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPherLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
 
 
     def GetBestColRoute(self):

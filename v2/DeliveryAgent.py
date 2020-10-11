@@ -2,7 +2,7 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #DeliveryAgent.py
 
-from math import sqrt
+#from math import sqrt
 
 class DeliveryAgent():
     """Delivery Agent / Vehicle class"""
@@ -12,7 +12,9 @@ class DeliveryAgent():
         self.y  = _y
         self.capacity = _capacity
         self.route = None
+        self.fLocation = None
         self.colour = _col
+    
 
     def Perform(self):
         """execute Route"""
@@ -21,4 +23,4 @@ class DeliveryAgent():
 
     def __repr__(self):
             #Python magic function, defines how obj is represented in when print is called
-        return "X:{1}, Y:{2}, C:{3}\n".format(self.x,self.y,self.capacity)
+        return "ID:{0}, X:{1}, Y:{2}, C:{3}\n".format(self.id,self.x,self.y,self.capacity)

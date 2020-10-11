@@ -5,9 +5,7 @@
 from random import choice,randint,sample
 from DeliveryAgent import DeliveryAgent
 from Packages import Package 
-from Statics import COL_LIST,BLUE,YELLOW,GREEN,RED
-
-
+from gui_functions import COL_LIST
 
 def TestLocations():
     """Returns location data from google or-tools example"""
@@ -29,19 +27,6 @@ def TestLocations():
             (0  , 640), # location 15
             (798, 640)] # location 16
 
-def TestVehicles():
-    """if n is unspecifed, default is 5,
-    n being the number of delivery agents"""
-    COLS = sample(COL_LIST,4)
-    vehicles = [
-        DeliveryAgent(0,0,0,15,BLUE),
-        DeliveryAgent(1,0,0,15,YELLOW),
-        DeliveryAgent(2,0,0,15,GREEN),
-        DeliveryAgent(3,0,0,15,RED)
-    ]
-
-    return vehicles
-
 def RandomLocations(n):
     locations = []
 
@@ -53,7 +38,7 @@ def RandomLocations(n):
 
 
 
-def RandomVehicles(n=5):
+def TestVehicles(n=5):
     """if n is unspecifed, default is 5,
     n being the number of delivery agents"""
     vehicles = []

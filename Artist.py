@@ -6,6 +6,7 @@ from Statics import *
 class Artist():
     def __init__(self,vehicles,world,width,height):
         self.vehicles = vehicles
+        self.num_vehicles = len(vehicles)
         self.world = world
 
         self.width = width
@@ -25,8 +26,8 @@ class Artist():
         """given two nodes, draws a line connecting them"""
         a = ( int(A.X*self.XSCL) , int(A.Y*self.YSCL) )#Scale X,Y values for screen
         b = ( int(B.X*self.XSCL) , int(B.Y*self.YSCL) )
-        pygame.gfxdraw.line(self.layer,a[0],a[1],b[0],b[1],colour)
-        #pygame.draw.line(self.layer,colour,a,b,thickness)
+        #pygame.gfxdraw.line(self.layer,a[0],a[1],b[0],b[1],colour)
+        pygame.draw.line(self.layer,colour,a,b,thickness)
 
     def SplitPoint(self,A,B):
         X = (A.X + B.X) / 2
@@ -51,14 +52,18 @@ class Artist():
         """Route should be a list of objects with X,Y attributes"""
         
         for i in range(len(route)-1) :
-            self.Path(route[i],route[i+1],colour,thickness+2)
+            self.Path(route[i],route[i+1],colour,thickness)
 
     def Draw(self):
         self.layer.fill(GREY)
         #self.doNeighbourConnections()
+        #this is to enable is to draw route from thickest to smallest, to avoid overlapping
+        thickness = int( (self.num_vehicles * 2) + 3 )
+
         for vehicle in self.vehicles:
             if vehicle.route is not None:
-                self.drawRoute(vehicle.route,vehicle.colour,int(vehicle.id[2:]))
+                self.drawRoute(vehicle.route,vehicle.colour,thickness)
+                thickness -= 2
 
         self.doNodes(self.world.depot)#draw depot only
         self.doNodes(self.world.locations)#draw remaining locations

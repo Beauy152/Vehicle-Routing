@@ -42,18 +42,17 @@ class Ant():
 
         lNeighbors = []
         lProbs = []
+        
         for lNeighbor in lTest:
-            if((lNeighbor.GetPackageWeight() + self.CurrentWeight) < self.AntCapacity) and (self.SameLoc(lNeighbor, aVisited) == False):
+            if((lNeighbor.GetPackageWeight() + self.CurrentWeight) <= self.AntCapacity) and (self.SameLoc(lNeighbor, aVisited) == False):
                 lNeighbors.append(lNeighbor)
                 lProbs.append(lNeighbor.GetProbability())
                 
         #Check if any valid neighbors
         if len(lNeighbors) > 0:
-            #Choose random neighbor based on probability weights
-            #TODO BUG!!! randomly, the number of probabilies increases. im guessing somewhere theyre being re-appende
+
             self.BestNeighbor = random.choices(lNeighbors, weights=lProbs, k=1)
             #Change location
-            #NOTE random.choices returns a list, so we need to use the 0th index
             self.BestNeighbor = self.BestNeighbor[0]
 
             self.Location = self.BestNeighbor.GetLocation()
@@ -67,9 +66,6 @@ class Ant():
             #Mark no more locations
             self.MoreLocations = False
             #Send back to warehouse
-
-            #NOTE instead of passing in a refernce to the depot for each ant
-            #we can just add it the the start&end of the route once finished.
             if len(self.CurrentRoute) > 0:
                 self.CurrentRoute.append(self.CurrentRoute[0])
             
@@ -103,6 +99,13 @@ class Ant():
             if aNeighbor.X == location.X and aNeighbor.Y == location.Y:
                 return True
         return False
+
+    def ResetAnt(self):
+        self.CurrentRoute = []
+        self.CurrentWeight = 0
+        self.MoreLocations = True
+
+        self.RouteCost = 0
 
 
     def GetDelta(self):

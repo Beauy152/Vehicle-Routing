@@ -48,7 +48,7 @@ class ACO():
             #Check if best route cost hasnt changed in x iterations (10 for now)
             if lTempBest == self.BestCost:
                 lCount += 1
-                if (lCount > 100):
+                if (lCount > 1000):
                     #Terminate if it hasn't changed in x iterations
                     self.RouteFound = True
             else:
@@ -71,6 +71,7 @@ class ACO():
         #Set each ant back at depot
         for lAnt in self.fColony:
             lAnt.Location = self.fMap.depot[0]
+            lAnt.ResetAnt()
 
 
     def AllocateRoutes(self):

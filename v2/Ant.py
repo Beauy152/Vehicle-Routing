@@ -103,6 +103,11 @@ class Ant():
                 return True
         return False
 
+    def ResetAnt(self):
+        self.CurrentRoute = []
+        self.CurrentWeight = 0
+        self.MoreLocations = True
+
 
     def GetDelta(self):
         return self.PherDelta

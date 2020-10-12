@@ -12,7 +12,6 @@ def GeneratePackages(total_capacity,_locations):
     Packages = []
     locations = _locations
     remaining_capacities = total_capacity
-
     while remaining_capacities > 0:
         rand_weight = randint(1,25)
 
@@ -21,12 +20,15 @@ def GeneratePackages(total_capacity,_locations):
             break
         else:
             remaining_capacities = remaining_capacities - rand_weight
+            
 
         Packages.append( 
             Package(
                 choice(locations),rand_weight) 
             )
+
     return Packages
+
 
 def TestPackages(Locations):
     print("Generating Test Packages")

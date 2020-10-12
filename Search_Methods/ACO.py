@@ -24,6 +24,9 @@ class ACO():
         #Best route cost
         self.BestCost = None
 
+        self.BestRouteGroup = []
+        self.BestGroupScore = 99999
+
 
     def run(self):
         return self.Optimize()
@@ -33,25 +36,28 @@ class ACO():
         lCount = 0
 
         while self.RouteFound == False:
-            lTempBest = self.BestCost
+            lTempBest = self.BestGroupScore
             #Initialize colony at depot
             self.ResetColony()
             #Establish a memory so other ants do not visit locations by previous ant routes in current loop
             lVisited = [Neighbour(self.fMap.depot[0], 0, 0)]
-            for lAnt in self.fColony:
-                #Calculate individual ant route
-                lAnt.FindRoute(lVisited, self.fMap)
-                #Append visited memory
-                # for lLocation in lAnt.GetRoute():
-                #     lVisited.append(lLocation)
+            # for lAnt in self.fColony:
+            #     #Calculate individual ant route
+            #     lAnt.FindRoute(lVisited, self.fMap)
+            lIndex = 0
+            while len(lVisited) < len(self.fMap.locations) - 1 and lIndex < len(self.fColony):
+                self.fColony[lIndex].FindRoute(lVisited, self.fMap)
+                lIndex+= 1
 
+            if len(lVisited) == len(self.fMap.locations):
+                self.UpdateBest()
             #Apply global pheremone update
             self.UpdateGlobal()
 
             #Check if best route cost hasnt changed in x iterations (10 for now)
-            if lTempBest == self.BestCost:
+            if lTempBest == self.BestGroupScore:
                 lCount += 1
-                if (lCount > 100):
+                if (lCount > 500):
                     #Terminate if it hasn't changed in x iterations
                     self.RouteFound = True
             else:
@@ -59,6 +65,7 @@ class ACO():
 
         #Allocate agents with routes
         return self.AllocateRoutes()
+        #NOTE Best route is the most optimal, so they would chose the route where they don't visit everything. Need to ensure everything is visited.
 
         
 
@@ -74,14 +81,15 @@ class ACO():
         #Set each ant back at depot
         for lAnt in self.fColony:
             lAnt.Location = self.fMap.depot[0]
+            lAnt.ResetAnt()
 
 
     def AllocateRoutes(self):
         
         lRoutedAgents = []
-        for lIndex, lAnt in enumerate(self.fColony):
+        for lIndex, lRoute in enumerate(self.BestRouteGroup):
             #Allocate each agent with best route of corresponding ant
-            self.fAgents[lIndex].route = lAnt.GetBestRoute()
+            self.fAgents[lIndex].route = lRoute
             #Append to updated agent array
             lRoutedAgents.append(self.fAgents[lIndex])
 
@@ -95,6 +103,20 @@ class ACO():
             #Calculate global pheremone deposition
             if self.BestAnt.GetRouteCost() > 0:
                 lNeighbor.SetPheremone((1 - lNeighbor.GetDecay()) * lNeighbor.GetPherLvl() + lNeighbor.GetDecay() * (self.BestAnt.GetRouteCost() ** -1))
+
+
+    def UpdateBest(self):
+        lGroupScore = 0
+        for lAnt in self.fColony:
+            lGroupScore += lAnt.GetRouteCost()
+
+        if lGroupScore < self.BestGroupScore:
+            
+            self.BestGroupScore = lGroupScore
+            self.BestRouteGroup = []
+            for lAnt in self.fColony:
+                self.BestRouteGroup.append(lAnt.GetRoute())
+            
 
 
     def GetBestColRoute(self):

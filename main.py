@@ -56,6 +56,8 @@ Master.setWorld(Locations)
 
 #Performs selected optimisation algoritm.
 Master.Execute()
+#
+Master.Stats()
 
 #start visualisation
 Master.Visualise()#can take width & height

@@ -27,8 +27,19 @@ class Core_Location(Point):
             results = results + "no neighbours."
         return results
 
+    def __str__(self):
+        package_str = ""
+        for package in self.packages:
+            package_str += "{0}kg,".format(package.weight)
+
+        return "{0} : packages:[{1}]".format(self.coords,package_str)
+
     def GetNeighbors(self):
         return self.neighbours
+
+    def GetPackageWeight(self):
+        if len(self.packages) < 1: return 0
+        return sum(p.weight for p in self.packages)
 
 
 class Core_Neighbour():
@@ -42,6 +53,7 @@ class Core_Neighbour():
 
         self.X = _L.X
         self.Y = _L.Y
+        self.coords = self.actual_location.coords
 
     def GetDist(self):
         return self.Distance
@@ -57,6 +69,13 @@ class Core_Neighbour():
         return "coords:({0},{1}), distance:{2}".format(self.actual_location.X, \
                                                         self.actual_location.Y, \
                                                         self.Distance)
+
+    def __str__(self):
+        package_str = ""
+        for package in self.actual_location.packages:
+            package_str += "{0}kg,".format(package.weight)
+
+        return "{0} : packages:[{1}]".format(self.coords,package_str)
 
 class ACO_Neighbour(Core_Neighbour):
     """inherits point class, extends with distance"""
@@ -147,6 +166,8 @@ class PSO_Location(Core_Location):
     def __init__(self,_X,_Y,_Packages,_T='l'):
         super().__init__(_X,_Y,_Packages,_T)
 
+    def __repr__(self):
+        return "PSO_L: X:{0},Y:{1}".format(self.X,self.Y)
 
 class PSO_Neighbour(Core_Neighbour):
     def __init__(self,_L,_D,_S):
@@ -181,13 +202,15 @@ class Map():
         #Array of Location objects
         self.InitLocations(self.neighbour_type)
 
+        self.depot[0] = self.locations.pop(0) #replace inital depot w/ depot with initialised neighbours
+
     def CalcDistance(self, aStartLoc, aEndLoc):
         return sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
 
     def InitLocations(self,neighbour_type):
         for l in self.locations:
             for n in self.locations:
-                if n != l:
+                if n != l and n != self.depot[0]:
                     #Append new neighbor with distance and savings calculations
                     l.neighbours.append( 
                         neighbour_type(n,

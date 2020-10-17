@@ -22,7 +22,8 @@ class MasterRouter():
             'world'   :None,
             'package_sum':0,
             'capacity_sum':0,
-            'search_method':search_method.lower()
+            'search_method':search_method.lower(),
+            'num_locations':0
         }
 
     def setVehicles(self,vehicles):
@@ -42,6 +43,7 @@ class MasterRouter():
     def setWorld(self,locations):
         self.KB['world'] = \
             Map(self.getField('search_method'), locations, self.getField('packages') )
+        self.setField('num_locations',len(locations)-1)
 
     def getField(self,field):
         """Generic Getter for KB"""
@@ -65,7 +67,7 @@ class MasterRouter():
         if method == 'aco':
             alg = ACO(self.getField('world'),self.getField('vehicles'))
         elif method == 'pso':
-            alg = PSO(self.width, self.height)
+            alg = PSO(self,self.width, self.height)
             #results = pso.run()
         return alg.run()
 
@@ -87,6 +89,22 @@ class MasterRouter():
 
             clock.tick(10)#Limit FPS
         pygame.quit()
+    
+    def Stats(self):
+        print("Num Vehicles:{0}\nNum Locations:{1}"\
+            .format(len(self.getField('vehicles')),
+                    len(self.getField('world').locations) ))
+
+        pathsum = 0
+        for v in self.getField('vehicles'):
+            if v.route == None: break#return None
+            print(v)
+            pathsum += v.sumRoute()
+        pathavg = pathsum / len(self.getField('vehicles'))
+        print("Path Avg:{0}".format(pathavg))
+        #results = ""
+
+        return None#results
 
 
 

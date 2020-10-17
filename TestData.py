@@ -9,6 +9,7 @@ from Statics import COL_LIST,BLUE,YELLOW,GREEN,RED
 
 
 
+
 def TestLocations():
     """Returns location data from google or-tools example"""
     return [(456, 320), # location 0 - the depot

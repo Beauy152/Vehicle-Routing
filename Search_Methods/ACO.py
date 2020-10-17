@@ -45,11 +45,11 @@ class ACO():
             #     #Calculate individual ant route
             #     lAnt.FindRoute(lVisited, self.fMap)
             lIndex = 0
-            while len(lVisited) < len(self.fMap.locations) - 1 and lIndex < len(self.fColony):
+            while len(lVisited) < len(self.fMap.locations)  and lIndex < len(self.fColony):
                 self.fColony[lIndex].FindRoute(lVisited, self.fMap)
                 lIndex+= 1
 
-            if len(lVisited) == len(self.fMap.locations):
+            if len(lVisited) == len(self.fMap.locations)+1 :
                 self.UpdateBest()
             #Apply global pheremone update
             self.UpdateGlobal()

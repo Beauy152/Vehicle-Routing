@@ -58,12 +58,12 @@ class Artist():
         self.layer.fill(GREY)
         #self.doNeighbourConnections()
         #this is to enable is to draw route from thickest to smallest, to avoid overlapping
-        thickness = int( (self.num_vehicles * 2) + 3 )
+        thickness = int( (self.num_vehicles * 1) + 3 )
 
         for vehicle in self.vehicles:
             if vehicle.route is not None:
                 self.drawRoute(vehicle.route,vehicle.colour,thickness)
-                thickness -= 2
+                thickness -= 1
 
         self.doNodes(self.world.depot)#draw depot only
         self.doNodes(self.world.locations)#draw remaining locations

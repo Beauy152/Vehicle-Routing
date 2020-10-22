@@ -165,6 +165,7 @@ class ACO_Location(Core_Location):
 class PSO_Location(Core_Location):
     def __init__(self,_X,_Y,_Packages,_T='l'):
         super().__init__(_X,_Y,_Packages,_T)
+        #p.all_visited = False
 
     def __repr__(self):
         return "PSO_L: X:{0},Y:{1}".format(self.X,self.Y)

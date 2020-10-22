@@ -11,8 +11,13 @@ class DeliveryAgent():
         self.x  = _x
         self.y  = _y
         self.capacity = _capacity
-        self.route = None
+        self.route = None#[]
         self.colour = _col
+
+        self.xref = None
+        self.yref = None
+        self.r    = None
+        self.distances = None
 
         #vehicle memory
         #self.mem = {}
@@ -31,7 +36,7 @@ class DeliveryAgent():
         return result
 
     def sumRoute(self):
-        if self.route == None or len(self.route) < 1:return None
+        if self.route == None or len(self.route) < 1:return 0
         else:
             dsum = 0
             for i in range(len(self.route)):
@@ -40,6 +45,14 @@ class DeliveryAgent():
                 aEndLoc = self.route[i+1]
                 dsum += sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
         
+    def sumPackages(self):
+        total = 0
+        if len(self.route) < 1 or self.route == None:
+            return total
+        for l in self.route:
+            total += l.GetPackageWeight()
+
+        return total
             #return sum(l.Distance for l in self.route)
 
     def __repr__(self):
@@ -47,4 +60,4 @@ class DeliveryAgent():
         return "X:{1}, Y:{2}, C:{3}\n".format(self.x,self.y,self.capacity)
 
     def __str__(self):
-        return "{0}:\ncapacity:{1}\nroute length:{2}\nroute:{3}".format(self.id,self.capacity,self.sumRoute(),self.printRoute())
+        return "{0}:\ncapacity:{1}\nroute length:{2}\npackage sum:{3}\nroute:{4}\n".format(self.id,self.capacity,self.sumRoute(),self.sumPackages(),self.printRoute())

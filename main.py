@@ -47,19 +47,22 @@ if(Inital_vals['useGoogleData']) :
     Master.Visualise()#can take width & height
 
 elif (Inital_vals['method'].lower() == "test") :
-
+    #Loop for both methods
     for x in range(2):
         if x == 0:
             lMethod = 'aco'
         else:
             lMethod = 'pso'
+        #Initialize variables
         Master = MasterRouter(lMethod,500,500)
         lAcoMem = [0] * 5
         lAcoTime = [0] * 5
         lIndex = 0
         lLocationSize = 10
-        for i in range(1,50):
 
+        #Loop over 50 iterations (10 per location size iteration)
+        for i in range(1,50):
+            #Create world and agents
             Locations = TestData.RandomLocations(lLocationSize)
             Vehicles = TestData.RandomVehicles( Inital_vals['num_vehicles'] )
             Master.setVehicles(Vehicles)
@@ -67,24 +70,33 @@ elif (Inital_vals['method'].lower() == "test") :
             Master.setPackages(Packages)
             Master.setWorld(Locations)
 
+            #Start timer
             lStart = time.time()
+            #Execute algorithm checking memory usage
             lMemUse = memory_usage(Master.Execute)
+            #Stop time
             lTime = (time.time() - lStart)
+
+            #Add to sum
             lAcoTime[lIndex] += lTime
             lAcoMem[lIndex] += max(lMemUse)
 
+            #Check if locationsize should increase
             if i % 10 == 0:
                 lLocationSize += 10
                 lIndex += 1
         
+        #Calculate averages
         for index, x in enumerate(lAcoMem):
             lAcoMem[index] /= 10
             lAcoTime[index] /= 10
+
 
         lFile = open("TestResults.txt", "a")
         
         lFile.write("Method: " + lMethod.upper() + "\n")
 
+        #Write to file
         for index, j in enumerate(lAcoTime):
             lFile.write("Locations (" + str((index + 1) * 10) + ")" + ": Average Time (" + str(lAcoTime[index]) + ") Max Memory (" +  str(lAcoMem[index]) + ") \n")
 

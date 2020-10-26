@@ -63,12 +63,16 @@ class MasterRouter():
             return False
 
     def Execute(self):
+         
         method = self.getField('search_method')
+
         if method == 'aco':
             alg = ACO(self.getField('world'),self.getField('vehicles'))
         elif method == 'pso':
             alg = PSO(self,self.width, self.height)
             #results = pso.run()
+        
+            
         return alg.run()
 
     def Visualise(self):

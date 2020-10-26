@@ -27,7 +27,8 @@ class InitialSetupGUI:
 
         SearchMethods = [
             ("ACO","aco","normal"),
-            ("PSO","pso","normal")
+            ("PSO","pso","normal"),
+            ("Testing (10-50 Locations)", "test", "normal")
         ]
 
         self.searchMethod = StringVar()

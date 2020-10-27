@@ -8,19 +8,27 @@ CalcDimensionalDistance,SumRouteDistance
 
 
 def two_opt(p,route):
-    n = len(route) #-2#-2 to account for depots in route
+    def swap(r,i,j):
+        new_route = r[0:i-1]
+        temp = r[i:k];temp.reverse()
+        new_route.extend(temp)
+        new_route.extend(r[k+1:])
+
+        return new_route
+
+    #route
+    n = len(route)
     baseline = SumRouteDistance(route)
-    new_route = route.copy()
-    for i in range(0,n-2):
-        for j in range(i+2,n-1):
-            new_route[i],new_route[i+1] = new_route[j],new_route[j+1]
+
+    for i in range(1,n-2):
+        for k in range(i+2,n):
+            new_route = swap(route,i,k)
             new_baseline = SumRouteDistance(new_route)
             if new_baseline < baseline:
+                route = new_route
                 baseline = new_baseline
-                route[:] = new_route
-            else:
-                new_route = route.copy()
-
+                break
+        #break
 
     return route
 
@@ -43,72 +51,73 @@ def two_opt(p,route):
     # return route
 
 
-def one_zero_exchange(p,route1,route2):
-    n = len(route1) #- 2
-    m = len(route2) #- 2
-    delta = 10#ten meters added as delta value
-    #baseline1 = SumRouteDistance(route1)#+delta
-    baseline_weight1 = SumRouteWeight(route1)
-    #baseline2 = SumRouteDistance(route2)#+delta
-    baseline_weight2 = SumRouteWeight(route2)
-    baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
+# def one_zero_exchange(p,route1,route2):
+#     n = len(route1) #- 2
+#     m = len(route2) #- 2
+#     delta = 10#ten meters added as delta value
+#     #baseline1 = SumRouteDistance(route1)#+delta
+#     baseline_weight1 = SumRouteWeight(route1)
+#     #baseline2 = SumRouteDistance(route2)#+delta
+#     baseline_weight2 = SumRouteWeight(route2)
+#     baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
 
-    new_r1 = route1.copy()
-    new_r2 = route2.copy()
+#     new_r1 = route1.copy()
+#     new_r2 = route2.copy()
 
-    for i in range(1,n-1):
-        for j in range(1,m-2):#starting from 1 and ending at m-1 allows us to skip the depot
-            temp_l = new_r1.pop(i)
-            new_r2.insert(j+1,temp_l)
-            new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
-            if ( new_baseline < baseline )  \
-                and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
-                #distance is shorter, and weight distrubution is better or the same
-                route1[:] = new_r1
-                route2[:] = new_r2
-                baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
-                baseline_weight1 = SumRouteWeight(route1)
-                #baseline2 = SumRouteDistance(route2)
-                baseline_weight2 = SumRouteWeight(route2)
-            else:
-                new_r1 = route1.copy()
-                new_r2 = route2.copy()
+#     for i in range(1,n-1):
+#         for j in range(1,m-2):#starting from 1 and ending at m-1 allows us to skip the depot
+#             temp_l = new_r1.pop(i)
+#             new_r2.insert(j+1,temp_l)
+#             new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
+#             if ( new_baseline < baseline )  \
+#                 and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
+#                 #distance is shorter, and weight distrubution is better or the same
+#                 route1[:] = new_r1
+#                 route2[:] = new_r2
+#                 baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
+#                 baseline_weight1 = SumRouteWeight(route1)
+#                 #baseline2 = SumRouteDistance(route2)
+#                 baseline_weight2 = SumRouteWeight(route2)
+#             else:
+#                 new_r1 = route1.copy()
+#                 new_r2 = route2.copy()
 
 
-def one_one_exchange(p,route1,route2):
-    n = len(route1) #- 2
-    m = len(route2) #- 2
+# def one_one_exchange(p,route1,route2):
+#     n = len(route1)
+#     # n = len(route1) #- 2
+#     # m = len(route2) #- 2
 
-    delta = 10#ten meters added as delta value
-    #baseline1 = SumRouteDistance(route1)#+delta
-    baseline_weight1 = SumRouteWeight(route1)
-    #baseline2 = SumRouteDistance(route2)#+delta
-    baseline_weight2 = SumRouteWeight(route2)
-    baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
+#     # delta = 10#ten meters added as delta value
+#     # #baseline1 = SumRouteDistance(route1)#+delta
+#     # baseline_weight1 = SumRouteWeight(route1)
+#     # #baseline2 = SumRouteDistance(route2)#+delta
+#     # baseline_weight2 = SumRouteWeight(route2)
+#     # baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
 
-    new_r1 = route1.copy()
-    new_r2 = route2.copy()
+#     # new_r1 = route1.copy()
+#     # new_r2 = route2.copy()
 
-    for i in range(1,n-1):
-        for j in range(1,m-2):
-            new_r1[i],new_r2[j] = new_r2[j],new_r1[i]
-            #3.a
-            new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
-            if ( new_baseline < baseline ) \
-                and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
-                #distance is shorter, and weight distrubution is better or the same
-                route1[:] = new_r1
-                route2[:] = new_r2
-                baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
-                baseline_weight1 = SumRouteWeight(route1)
-                #baseline2 = SumRouteDistance(route2)
-                baseline_weight2 = SumRouteWeight(route2)
-            else:
-                new_r1 = route1.copy()
-                new_r2 = route2.copy()
+#     # for i in range(1,n-1):
+#     #     for j in range(1,m-2):
+#     #         new_r1[i],new_r2[j] = new_r2[j],new_r1[i]
+#     #         #3.a
+#     #         new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
+#     #         if ( new_baseline < baseline ) \
+#     #             and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
+#     #             #distance is shorter, and weight distrubution is better or the same
+#     #             route1[:] = new_r1
+#     #             route2[:] = new_r2
+#     #             baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
+#     #             baseline_weight1 = SumRouteWeight(route1)
+#     #             #baseline2 = SumRouteDistance(route2)
+#     #             baseline_weight2 = SumRouteWeight(route2)
+#     #         else:
+#     #             new_r1 = route1.copy()
+#     #             new_r2 = route2.copy()
 
-    #one_one_exchange()
-    #one_zero_exchange()
+#     #one_one_exchange()
+#     #one_zero_exchange()
     
 
 class Faux_Vehicle():
@@ -400,6 +409,7 @@ class PSO:
         #Randomly initialise particle position
         self.Master = Master
         self.world = Master.getField('world')
+        #self.world.locations = self.world.locations 
         self.vehicles = self.Master.getField('vehicles')
         self.local_improvement = local_improvements#boolean
         #self.initSwarm( 20 )#I=50 #self.Master.getField('num_locations') )
@@ -427,7 +437,7 @@ class PSO:
             # self.vehicles[i].route.append(self.world.depot[0])
             # self.vehicles[i].route.insert(0,self.world.depot[0])
 
-    def run(self,iterations = 400):
+    def run(self,iterations = 750):
         #9. Stopping criteria
         K = 5 #num of neighbours; arbirary value
         T = iterations
@@ -438,7 +448,7 @@ class PSO:
             #1. Initialise
             vehicles = self.vehicles
 
-            swarm = Swarm(40, vehicles,self.width,self.height,self.world.locations)       
+            swarm = Swarm(50, vehicles,self.width,self.height,self.world.locations)       
 
             #2. Deocode
             swarm.decode(self.world,self.local_improvement)

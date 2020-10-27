@@ -40,6 +40,7 @@ class MasterRouter():
         self.KB['packages'] = packages
         self.KB['package_sum'] = temp_package_sum
 
+
     def setWorld(self,locations):
         self.KB['world'] = \
             Map(self.getField('search_method'), locations, self.getField('packages') )

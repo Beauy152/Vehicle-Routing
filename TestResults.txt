@@ -1,0 +1,18 @@
+Method: ACO
+Locations (10): Average Time (2.1902535438537596) Max Memory (62.630859375) 
+Locations (20): Average Time (1.930789041519165) Max Memory (63.31640625) 
+Locations (30): Average Time (3.8297012090682983) Max Memory (64.230859375) 
+Locations (40): Average Time (7.494539833068847) Max Memory (66.301953125) 
+Locations (50): Average Time (12.031125998497009) Max Memory (61.13046875) 
+Method: PSO_S1
+Locations (10): Average Time (21.216517090797424) Max Memory (68.332421875) 
+Locations (20): Average Time (35.03980731964111) Max Memory (67.651171875) 
+Locations (30): Average Time (56.37887418270111) Max Memory (67.636328125) 
+Locations (40): Average Time (90.8703085899353) Max Memory (67.659375) 
+Locations (50): Average Time (133.21544280052186) Max Memory (61.2953125) 
+Method: PSO_S2
+Locations (10): Average Time (18.25878849029541) Max Memory (67.725) 
+Locations (20): Average Time (27.212112998962404) Max Memory (67.5375) 
+Locations (30): Average Time (36.83084897994995) Max Memory (67.38671875) 
+Locations (40): Average Time (46.12665228843689) Max Memory (67.73671875) 
+Locations (50): Average Time (51.76681497097015) Max Memory (61.325390625) 

@@ -473,7 +473,7 @@ class PSO:
 
 
         #
-        print("Decoding final routes:")
+        #print("Decoding final routes:")
         #10. Decode final solution
         p = Particle(vehicles,self.width,self.height,self.world.locations)
         p.dimensions = swarm.gbest
@@ -482,4 +482,7 @@ class PSO:
         final_routes = p.decode(p.dimensions,vehicles,self.world,self.local_improvement) 
 
         self.AssignRoutes(final_routes[0])
+
+        #return route sum
+        #return 
         

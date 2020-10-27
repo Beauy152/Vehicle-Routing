@@ -34,9 +34,9 @@ def main():
             Master = MasterRouter(lMethod,500,500)
             lAcoMem = [0] * 5
             lAcoTime = [0] * 5
+            lAcoRoute= [0] * 5
             lIndex = 0
             lLocationSize = 10
-
             #Loop over 50 iterations (10 per location size iteration)
             for i in range(1,50):
                 #Create world and agents
@@ -55,9 +55,12 @@ def main():
                 lTime = (time.time() - lStart)
 
                 #Add to sum
+                lAcoRoute[lIndex] += Master.RouteSum()
                 lAcoTime[lIndex] += lTime
                 lAcoMem[lIndex] += max(lMemUse)
 
+                # print("master.rountesum")
+                # print(Master.RouteSum())
                 #Check if locationsize should increase
                 if i % 10 == 0:
                     lLocationSize += 10
@@ -65,6 +68,7 @@ def main():
             
             #Calculate averages
             for index, x in enumerate(lAcoMem):
+                lAcoRoute[index] /= 10
                 lAcoMem[index] /= 10
                 lAcoTime[index] /= 10
 
@@ -75,7 +79,8 @@ def main():
 
             #Write to file
             for index, j in enumerate(lAcoTime):
-                lFile.write("Locations (" + str((index + 1) * 10) + ")" + ": Average Time (" + str(lAcoTime[index]) + ") Max Memory (" +  str(lAcoMem[index]) + ") \n")
+                lFile.write("Locations ({0}) : Average Time ({1}), Max Memory ({2}), Average Route Length ({3})\n".format( (index + 1) * 10 , lAcoTime[index], lAcoMem[index], lAcoRoute[index] ))
+                #lFile.write("Locations (" + str((index + 1) * 10) + ")" + ": Average Time (" + str(lAcoTime[index]) + ") Max Memory (" +  str(lAcoMem[index]) + ") \n")
 
 
             lFile.close()

@@ -95,6 +95,9 @@ class MasterRouter():
             clock.tick(10)#Limit FPS
         pygame.quit()
     
+    def RouteSum(self):
+        return sum(v.sumRoute() for v in self.getField('vehicles'))
+
     def Stats(self):
         print("Num Vehicles:{0}\nNum Locations:{1}"\
             .format(len(self.getField('vehicles')),
@@ -106,7 +109,7 @@ class MasterRouter():
             print(v)
             pathsum += v.sumRoute()
         pathavg = pathsum / len(self.getField('vehicles'))
-        print("Path Avg:{0}".format(pathavg))
+        print("Path Avg:{0}\nPath Sum:{1}".format(pathavg,self.RouteSum()))
         #results = ""
 
         return None#results

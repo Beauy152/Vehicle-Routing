@@ -8,7 +8,7 @@ class InitialSetupGUI:
         self.root.title(title)
 
         self.num_locs_label = Label(root,text="Number of Locations").pack()
-        self.num_locs = Spinbox(root,from_=2,to=20,width=10,textvariable=IntVar(value=16))
+        self.num_locs = Spinbox(root,from_=2,to=50,width=10,textvariable=IntVar(value=16))
         self.num_locs.pack()
 
         self.num_vehc_label = Label(root,text="Number of Vehicles").pack()

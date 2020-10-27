@@ -1,6 +1,7 @@
 GREY = (  54,  54,  54)
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)
+LGREY= ( 212, 212, 212)
 
 BLUE = (  84, 131, 179)
 MINT = ( 130, 255, 193)
@@ -19,7 +20,8 @@ MAGENTA=(177,  18, 201)
 COLOURS = {
     'l':BLUE, #location
     'd':BLACK,#Depot
-    's':MINT  #Selected
+    's':MINT,  #Selected
+    'np':LGREY #No package
 }
 
 COL_LIST = [MINT,GREEN,YELLOW,ORANGE,PINK,RED,NIGHT,SKY,CYAN,MAGENTA]

@@ -27,12 +27,13 @@ class InitialSetupGUI:
 
         SearchMethods = [
             ("ACO","aco","normal"),
-            ("PSO","pso","normal"),
+            ("PSO W/Local improvement","pso_s1","normal"),
+            ("PSO No Local Improvement","pso_s2","normal"),
             ("Testing (10-50 Locations)", "test", "normal")
         ]
 
         self.searchMethod = StringVar()
-        self.searchMethod.set("pso")
+        self.searchMethod.set("pso_s2")
 
         for text,val,state in SearchMethods:
             temp = Radiobutton(methods_frame,variable=self.searchMethod,

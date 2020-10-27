@@ -36,6 +36,8 @@ class DeliveryAgent():
         return result
 
     def sumRoute(self):
+        if type(self.route) == tuple:
+            self.route = self.route[1]
         if self.route == None or len(self.route) < 1:return 0
         else:
             dsum = 0

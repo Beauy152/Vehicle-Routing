@@ -68,11 +68,11 @@ class MasterRouter():
 
         if method == 'aco':
             alg = ACO(self.getField('world'),self.getField('vehicles'))
-        elif method == 'pso':
-            alg = PSO(self,self.width, self.height)
-            #results = pso.run()
-        
-            
+        elif method == 'pso_s1':
+            alg = PSO(self,self.width, self.height,True)
+        elif method == 'pso_s2':
+            alg = PSO(self,self.width, self.height,False)
+            #results = pso.run()    
         return alg.run()
 
     def Visualise(self):

@@ -17,6 +17,7 @@ class Core_Location(Point):
         self.Type = _T
         self.neighbours = []
         self.packages = _Packages
+        self.package_sum = self.GetPackageWeight()
 
     def __repr__(self):
         results = "Location: %s\n  Neighbours:\n" % str(self.coords)
@@ -193,8 +194,11 @@ class Map():
         self.locations = [ self.location_type( l[0], l[1], [p for p in _packages if p.location is l] ) 
                             for l in _locations ]
 
+        for l in self.locations:
+            if len(l.packages) < 1: l.Type = 'np'#no package
         #set first item in array as type depot
-        self.locations[0].Type = 'd'
+        self.locations[0].Type = 'd'  
+        self.locations[0].packages = []
 
         #Single array of warehouse coordinates
         self.depot = []

@@ -4,59 +4,71 @@ from random import randint,choice
 from genericFunctions import CalcDistance2,CalcDistance3,CalcDistance4,SumRouteWeight,\
 CalcDimensionalDistance,SumRouteDistance
 
+
+
+
 def two_opt(p,route):
+    n = len(route) #-2#-2 to account for depots in route
     baseline = SumRouteDistance(route)
     new_route = route.copy()
-    depot = route[0]
-    #2-opt exchange algorithm
-    #1
-    n = len(new_route)-2#2 for depots
-    #2.
-    #i=0
-    for i in range(n-2):
-        for j in range(i+2,n):
-            #2.a
+    for i in range(0,n-2):
+        for j in range(i+2,n-1):
             new_route[i],new_route[i+1] = new_route[j],new_route[j+1]
-            #2.b
-            new_baseline = SumRouteDistance(route)
-            #2.c
-            #ensures first and last locations are depot
-            if (new_route[0] == depot) and (new_route[-1] == depot):
-                #as we are only altering the order of locations in a route, we don't need to worry
-                #about the total weight of the route
-                if new_baseline < baseline:
-                    baseline = new_baseline
-                    route[:] = new_route
-                else:
-                    new_route = route.copy()
+            new_baseline = SumRouteDistance(new_route)
+            if new_baseline < baseline:
+                baseline = new_baseline
+                route[:] = new_route
+            else:
+                new_route = route.copy()
+
+
     return route
+
+    # baseline = SumRouteDistance(route)
+    # new_route = route.copy()
+
+    # n = len(new_route)-1#-2#2 for depots
+
+    # for i in range(1,n-2):
+    #     for j in range(i+2,n):
+    #         #2.a
+    #         new_route[i],new_route[i+1] = new_route[j],new_route[j+1]
+    #         #2.b
+    #         new_baseline = SumRouteDistance(route)
+    #         if new_baseline < baseline:
+    #             baseline = new_baseline
+    #             route[:] = new_route
+    #         else:
+    #             new_route = route.copy()
+    # return route
 
 
 def one_zero_exchange(p,route1,route2):
-    n = len(route1) - 2
-    m = len(route2) - 2
+    n = len(route1) #- 2
+    m = len(route2) #- 2
     delta = 10#ten meters added as delta value
-    baseline1 = SumRouteDistance(route1)#+delta
+    #baseline1 = SumRouteDistance(route1)#+delta
     baseline_weight1 = SumRouteWeight(route1)
-    baseline2 = SumRouteDistance(route2)#+delta
+    #baseline2 = SumRouteDistance(route2)#+delta
     baseline_weight2 = SumRouteWeight(route2)
+    baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
 
     new_r1 = route1.copy()
     new_r2 = route2.copy()
 
     for i in range(1,n-1):
-        for j in range(1,m-1):#starting from 1 and ending at m-1 allows us to skip the depot
+        for j in range(1,m-2):#starting from 1 and ending at m-1 allows us to skip the depot
             temp_l = new_r1.pop(i)
             new_r2.insert(j+1,temp_l)
-
-            if (( SumRouteDistance(new_r1) < baseline1 ) or (SumRouteDistance(new_r2) < baseline2) ) \
+            new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
+            if ( new_baseline < baseline )  \
                 and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
                 #distance is shorter, and weight distrubution is better or the same
                 route1[:] = new_r1
                 route2[:] = new_r2
-                baseline1 = SumRouteDistance(route1)
+                baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
                 baseline_weight1 = SumRouteWeight(route1)
-                baseline2 = SumRouteDistance(route2)
+                #baseline2 = SumRouteDistance(route2)
                 baseline_weight2 = SumRouteWeight(route2)
             else:
                 new_r1 = route1.copy()
@@ -64,30 +76,32 @@ def one_zero_exchange(p,route1,route2):
 
 
 def one_one_exchange(p,route1,route2):
-    n = len(route1) - 2
-    m = len(route2) - 2
+    n = len(route1) #- 2
+    m = len(route2) #- 2
 
     delta = 10#ten meters added as delta value
-    baseline1 = SumRouteDistance(route1)#+delta
+    #baseline1 = SumRouteDistance(route1)#+delta
     baseline_weight1 = SumRouteWeight(route1)
-    baseline2 = SumRouteDistance(route2)#+delta
+    #baseline2 = SumRouteDistance(route2)#+delta
     baseline_weight2 = SumRouteWeight(route2)
+    baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
 
     new_r1 = route1.copy()
     new_r2 = route2.copy()
 
     for i in range(1,n-1):
-        for j in range(1,m-1):
+        for j in range(1,m-2):
             new_r1[i],new_r2[j] = new_r2[j],new_r1[i]
             #3.a
-            if (( SumRouteDistance(new_r1) < baseline1 ) or (SumRouteDistance(new_r2) < baseline2) ) \
+            new_baseline = SumRouteDistance(new_r1) + SumRouteDistance(new_r2)
+            if ( new_baseline < baseline ) \
                 and ((SumRouteWeight(new_r1) <= baseline_weight1) and (SumRouteWeight(new_r2) <= baseline_weight2)):
                 #distance is shorter, and weight distrubution is better or the same
                 route1[:] = new_r1
                 route2[:] = new_r2
-                baseline1 = SumRouteDistance(route1)
+                baseline = SumRouteDistance(route1) + SumRouteDistance(route2)
                 baseline_weight1 = SumRouteWeight(route1)
-                baseline2 = SumRouteDistance(route2)
+                #baseline2 = SumRouteDistance(route2)
                 baseline_weight2 = SumRouteWeight(route2)
             else:
                 new_r1 = route1.copy()
@@ -97,8 +111,17 @@ def one_one_exchange(p,route1,route2):
     #one_zero_exchange()
     
 
+class Faux_Vehicle():
+    def __init__(self,xref,yref,radius,max_capacity):
+        self.xref = xref
+        self.yref = yref
+        self.radius = radius
+        self.capacity = 0
+        self.max_capacity = max_capacity
+        self.route = []
+
 class Particle():
-    def __init__(self,vehicles,width,height,capacity=15):
+    def __init__(self,vehicles,width,height,locations,capacity=15):
         #self.velocity = 0
         self.fitness = None
         self.pbest_fitness = None
@@ -111,12 +134,12 @@ class Particle():
         self.capacity = 0
         self.max_capacity = capacity
 
-        self.dimensions = [] # 3m; m = num vehicles
+        self.dimensions = []
         for v in vehicles:
             self.dimensions.append(randint(1,width))#xref
             self.dimensions.append(randint(1,height))#yref
-            self.dimensions.append(randint(int(width/6),int(width/2)))#radius
-            
+            self.dimensions.append(randint(int(width/3),int(width/2)))#radius
+                    
         self.velocity = [0] * (3 * len(vehicles))
 
         self.pbest = self.dimensions.copy()
@@ -164,80 +187,99 @@ class Particle():
 
         return total_sum + (penalty * 50)#adding penalty for missing locations
 
-    def decode2(self,dimensions,vehicle,world):
-        routes = []
+    def decode(self,dimensions,vehicle,world,local_improvement):
         visited = []
+        routes = []
+
         d = 0
-        #1. Extract vehicle properties from dimensions
-        for v in vehicle:#for d in range(len(self.dimensions)):
-            self.capacity = 0
+        vehicles = []
+        for v in vehicle:
             xref = dimensions[d]
             yref = dimensions[(d+1)]
             radius = dimensions[(d+2)]
+            V = Faux_Vehicle(
+                            xref, yref, radius, v.capacity )
+            vehicles.append(V)
             d += 3
-        
-            #2.a Construct Routes
+            #2.a construct routes
             route = []
-            location_distances = [ (CalcDistance3(xref,yref,l),l) for l in world.locations]
+
+            
+            location_distances = [ (CalcDistance3(xref,yref,l),l) for l in world.locations if l not in visited]
             in_radius = [l for l in location_distances if l[0] <= radius]
-            out_radius = [l for l in location_distances if l[0] > radius]
 
             in_radius.sort(key=lambda l:l[0])
-            out_radius.sort(key=lambda l:l[0], reverse=True)
-            #2.1
-            #location_distances.sort(key=lambda x:x[0])#sort by distances,low to high
-            for t in range(10):#run for 100 iterations or until capacity is reached
-                for l in in_radius: #location is tuple (distance,location object)
-                    if (l[1].GetPackageWeight() + self.capacity <= self.max_capacity):
-                        if l[1] not in visited:
-                            route.append(l[1])
-                            visited.append(l[1])
-                            self.capacity += l[1].GetPackageWeight()
-                    #else:break
 
-                for l in out_radius: #location is tuple (distance,location object)
-                    if (l[1].GetPackageWeight() + self.capacity <= self.max_capacity):
-                        if l[1] not in visited:
-                            route.append(l[1])
-                            visited.append(l[1])
-                            self.capacity += l[1].GetPackageWeight()
-                    #else:break
-                #early exit condition
-                if self.capacity == self.max_capacity: break
+            for l in in_radius:
+                if l[1].package_sum + SumRouteWeight(route) <= v.capacity:
+                    route.append(l[1])
+                    visited.append(l[1])
 
-            #TODO last two points on step 2.c of algorithm 3
-            #2.D - Optimise
-            #TODO Optimise
-            #visited.extend(route)   
-            route.insert(0,world.depot[0])
-            route.append(world.depot[0])
+
+            
+            #visited.extend(route)                                      #add to visited
+            route.insert(0,world.depot[0]);route.append(world.depot[0])#add depots to route
+            V.route = route
             routes.append(route)
-            #v.route = route
-        
-        #add a pentalty for this particle
+        #2.b optimise partical routes
+        if local_improvement: self.local_improvements(routes)
+            
+        #2.c insert remaining customers
         remaining = [l for l in world.locations if l not in visited]
-        penalty = len(remaining) * 75#50
+        remaining.sort( key=lambda x: CalcDistance2( x,world.depot[0] ), reverse=True )
 
-        self.local_improvements(routes)
+        for l in remaining:
+            vehicles.sort(key=lambda x:CalcDistance3(x.xref,x.yref,l))
+            for v in vehicles:#now ordered by closest to location
+                if (l.package_sum + SumRouteWeight(v.route) <= v.max_capacity) and l not in visited:
+                    if len(v.route) == 2:v.route.insert(-1,l)
+                    else: v.route.insert(-2,l)
+                    visited.append(l)
+                    break
+
+
+        #2.d re-optimise
+        #self.local_improvements(routes)
+        # #add a pentalty for this particle
+        #this essentially ensures that any particle that does not visit all locations, will never be the best
+        remaining = [l for l in world.locations if l not in visited]
+        penalty = len(remaining) * 1000#50
+
+        # self.local_improvements(routes)
+        if local_improvement: self.local_improvements(routes)
+        #print(len([l for l in world.locations if l not in visited]))
 
         return (routes,penalty)
-        #ensure no particles aren't assigned a route
-        # remaining = [l for l in world.locations if l not in visited]
-        # for l in remaining:
-        #     for r in self.routes:
-        #         if l.GetPackageWeight() + SumRouteWeight(r) <= self.max_capacity:
-        #             r.insert(-1,l)
 
 
     def local_improvements(self,routes):
         for route in routes:
             route = two_opt(self,route)
         
-        for i in range(len(routes)-1):
-            one_one_exchange( self, routes[i],routes[i+1] )
+
+
+        # routes.sort(key=lambda x:SumRouteDistance(x))
+
+        # n = len(routes)
+        # I = int(n/2)#to find mid poiunt
+        # n -= 1
+        # for i in range(0,I):
+        #     if i == n-i: 
+        #         one_one_exchange(self,routes[i],routes[i+1])
+        #     else:
+        #         one_one_exchange(self,routes[i],routes[n-i])
+
+        # for i in range(0,I):
+        #     if i == n-i: 
+        #         one_zero_exchange(self,routes[i],routes[i+1])
+        #     else:
+        #         one_zero_exchange(self,routes[i],routes[n-i])
+
+        # for i in range(len(routes)-1):
+        #     one_one_exchange( self, routes[i],routes[i+1] )
         
-        for i in range(len(routes)-1):
-            one_zero_exchange( self, routes[i],routes[i+1] )
+        # for i in range(len(routes)-1):
+        #     one_zero_exchange( self, routes[i],routes[i+1] )
 
 
     def __repr__(self):
@@ -245,10 +287,10 @@ class Particle():
 
 
 class Swarm():
-    def __init__(self,population,vehicles,width,height):
+    def __init__(self,population,vehicles,width,height,locations):
         self.vehicles = vehicles
-        
-        self.particles = [ Particle(vehicles,width, height)#,choice([i.capacity for i in vehicles]))
+        #self.local_improvement = local_improvement
+        self.particles = [ Particle(vehicles,width, height,locations)#,choice([i.capacity for i in vehicles]))
                 for p in range(population) ]
 
         #self.gbest = None
@@ -294,9 +336,9 @@ class Swarm():
         self.gbest = best_particle.pbest
         self.gbest_fitness = best_particle.pbest_fitness
 
-    def evaluatePbest(self,world):
+    def evaluatePbest(self,world,local_improvement):
         for p in self.particles:
-            pb_result = p.decode2(p.pbest,self.vehicles,world)
+            pb_result = p.decode(p.pbest,self.vehicles,world,local_improvement)
             pb_route = pb_result[0]
             pb_penalty = pb_result[1]
 
@@ -342,15 +384,15 @@ class Swarm():
                     p.dimensions[d] = xmin
                     p.velocity[d] = 0
 
-    def decode(self,world):
+    def decode(self,world,local_improvement):
         for p in self.particles:#for i in range(len(self.particles)): #careful when indexing. we cannot start at 0. range(0->max)
-            result = p.decode2(p.dimensions,self.vehicles,world)
+            result = p.decode(p.dimensions,self.vehicles,world,local_improvement)
             p.routes = result[0]
             p.penalty = result[1]
 
 
 class PSO:
-    def __init__(self,Master,width,height):
+    def __init__(self,Master,width,height,local_improvements):
         self.width = width
         self.height= height
         #c1 = 1.5
@@ -359,7 +401,7 @@ class PSO:
         self.Master = Master
         self.world = Master.getField('world')
         self.vehicles = self.Master.getField('vehicles')
-
+        self.local_improvement = local_improvements#boolean
         #self.initSwarm( 20 )#I=50 #self.Master.getField('num_locations') )
 
 
@@ -382,28 +424,30 @@ class PSO:
     def AssignRoutes(self,routes):
         for i in range(len(self.vehicles)):
             self.vehicles[i].route = routes[i]
+            # self.vehicles[i].route.append(self.world.depot[0])
+            # self.vehicles[i].route.insert(0,self.world.depot[0])
 
-    def run(self,iterations = 1000):
+    def run(self,iterations = 400):
         #9. Stopping criteria
         K = 5 #num of neighbours; arbirary value
         T = iterations
         #
-        print("--Particle Swarm Optimisation--\nStarting iterations:")
+        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--" % self.local_improvement) 
         for t in range(1,T):
             #inertia = 0.4 + ( ((t-1)-T) / (1-T) ) * (0.9 - 0.4)
             #1. Initialise
             vehicles = self.vehicles
 
-            swarm = Swarm(50, vehicles,self.width,self.height)       
+            swarm = Swarm(40, vehicles,self.width,self.height,self.world.locations)       
 
             #2. Deocode
-            swarm.decode(self.world)
+            swarm.decode(self.world,self.local_improvement)
 
             #3. Compute Performance measure for each particle
             swarm.evaluateRoute()
 
             #4. Update pbest
-            swarm.evaluatePbest(self.world)
+            swarm.evaluatePbest(self.world,self.local_improvement)
 
             #5. Update gbest
             swarm.evaluateGbest()
@@ -421,10 +465,11 @@ class PSO:
         #
         print("Decoding final routes:")
         #10. Decode final solution
-        p = Particle(vehicles,self.width,self.height)
+        p = Particle(vehicles,self.width,self.height,self.world.locations)
         p.dimensions = swarm.gbest
         p.fitness = swarm.gbest_fitness
 
-        final_routes = p.decode2(p.dimensions,vehicles,self.world) 
+        final_routes = p.decode(p.dimensions,vehicles,self.world,self.local_improvement) 
+
         self.AssignRoutes(final_routes[0])
         

@@ -15,28 +15,23 @@ def main():
     root.mainloop()
 
     Inital_vals = InitalSetupView.getData()
-    print( InitalSetupView.getData() )
-    #example output
+    #example output ^
     #{'num_locations': 16, 'num_vehicles': 1, 'useGoogleData': 1}
 
 
-
     if (Inital_vals['method'].lower() == "test") :
-        for x in range(2):
+        #Loop for both methods
+        for x in range(3):
             if x == 0:
+                lMethod = 'aco'
+            elif x == 1:
                 lMethod = 'pso_s1'
             else:
                 lMethod = 'pso_s2'
-        #Loop for both methods
-                        # for x in range(3):
-                        #     if x == 0:
-                        #         lMethod = 'aco'
-                        #     elif x == 1:
-                        #         lMethod = 'pso_s1'
-                        #     else:
-                        #         lMethod = 'pso_s2'
             #Initialize variables
-            Master = MasterRouter(lMethod,500,500)
+            Master = MasterRouter(lMethod,
+                              Inital_vals['screen_width'],
+                              Inital_vals['screen_height'])
             lAcoMem = [0] * 5
             lAcoTime = [0] * 5
             lAcoRoute= [0] * 5
@@ -65,8 +60,6 @@ def main():
                 lAcoTime[lIndex] += lTime
                 lAcoMem[lIndex] += max(lMemUse)
 
-                # print("master.rountesum")
-                # print(Master.RouteSum())
                 #Check if locationsize should increase
                 if i % 10 == 0:
                     lLocationSize += 10
@@ -86,13 +79,16 @@ def main():
             #Write to file
             for index, j in enumerate(lAcoTime):
                 lFile.write("Locations ({0}) : Average Time ({1}), Max Memory ({2}), Average Route Length ({3})\n".format( (index + 1) * 10 , lAcoTime[index], lAcoMem[index], lAcoRoute[index] ))
-                #lFile.write("Locations (" + str((index + 1) * 10) + ")" + ": Average Time (" + str(lAcoTime[index]) + ") Max Memory (" +  str(lAcoMem[index]) + ") \n")
 
 
             lFile.close()
     else:
         #Create Master Router, initialised with search method
-        Master = MasterRouter(Inital_vals['method'],500,500)#method,wdith,height
+        Master = MasterRouter(Inital_vals['method'],
+                              Inital_vals['screen_width'],
+                              Inital_vals['screen_height'])
+        Master.setField("pso_population",Inital_vals['pso_population'])
+        Master.setField("pso_iterations",Inital_vals['pso_iterations'])
         if(Inital_vals['useGoogleData']) : 
 
             Locations = TestData.TestLocations()
@@ -118,7 +114,7 @@ def main():
             Master.Stats()
 
             #start visualisation
-            Master.Visualise()#can take width & height
+            Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
 
 
         else:
@@ -141,11 +137,12 @@ def main():
 
             #Performs selected optimisation algoritm.
             Master.Execute()
-            #
+
+            #Show routes & Route statistics on completion
             Master.Stats()
 
             #start visualisation
-            Master.Visualise()#can take width & height
+            Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
 
 
 

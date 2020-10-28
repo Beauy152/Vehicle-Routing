@@ -1,6 +1,7 @@
 import pygame
 import pygame.gfxdraw
 from Statics import *
+from time import sleep
 #from Mapping import *
 
 class Artist():
@@ -43,26 +44,27 @@ class Artist():
             #pygame.draw.circle(self.layer,COLOURS[node.Type],(X,Y),R)
             #COLOURS[node.value] : looks up colour based on value of node
     
-    def doNeighbourConnections(self):
-        for node in self.world.locations:
-            for n in node.neighbours:
-                self.Path(node,n.actual_location,BLACK)
-    
-    def drawRoute(self,route,colour=(0,0,0),thickness=2):
+
+    def drawRoute(self,route,stepthrough,colour=(0,0,0),thickness=2):
         """Route should be a list of objects with X,Y attributes"""
-        
+
         for i in range(len(route)-1) :
             self.Path(route[i],route[i+1],colour,thickness)
+            if stepthrough:
+                self.doNodes(self.world.depot)#draw depot only
+                self.doNodes(self.world.locations)#draw remaining locations
+                pygame.display.update()
+                sleep(0.5)
 
-    def Draw(self):
+    def Draw(self,stepthrough):
         self.layer.fill(GREY)
-        #self.doNeighbourConnections()
+
         #this is to enable is to draw route from thickest to smallest, to avoid overlapping
         thickness = int( (self.num_vehicles * 1) + 3 )
 
         for vehicle in self.vehicles:
             if vehicle.route is not None:
-                self.drawRoute(vehicle.route,vehicle.colour,thickness)
+                self.drawRoute(vehicle.route,stepthrough,vehicle.colour,thickness)
                 thickness -= 1
 
         self.doNodes(self.world.depot)#draw depot only

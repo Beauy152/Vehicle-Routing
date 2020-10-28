@@ -2,20 +2,17 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #MasterAgent.py
 
-#from gui_functions import *
 from Mapping import Map
 from Artist import Artist
 import pygame
 import pygame.gfxdraw
 from Search_Methods.PSO import PSO
 from Search_Methods.ACO import ACO
-#from ACO import ACO
 
 class MasterRouter():
     def __init__(self,search_method,width,height):
         self.width = width
         self.height = height
-        #self.id = "m_"
         self.KB = {#Knowledge base. vehicle information
             'vehicles':[],
             'packages':[],
@@ -27,6 +24,7 @@ class MasterRouter():
         }
 
     def setVehicles(self,vehicles):
+        """Assigns vehicles & their cumulative capacity to KB"""
         temp_capacity_sum = \
             sum(v.capacity for v in vehicles)
 
@@ -34,14 +32,15 @@ class MasterRouter():
         self.KB['capacity_sum'] = temp_capacity_sum
 
     def setPackages(self,packages):
+        """Assigns packages & their cumulative weight to KB"""
         temp_package_sum = \
             sum(p.weight for p in packages)
 
         self.KB['packages'] = packages
         self.KB['package_sum'] = temp_package_sum
 
-
     def setWorld(self,locations):
+        """Assigns world representation to KB & num locations"""
         self.KB['world'] = \
             Map(self.getField('search_method'), locations, self.getField('packages') )
         self.setField('num_locations',len(locations)-1)
@@ -50,21 +49,17 @@ class MasterRouter():
         """Generic Getter for KB"""
         if field in self.KB:
             return self.KB[field]
-        else:
-            print("Key doesn't exist in KB")
-            return None
+        else: return None
 
     def setField(self,field,value):
         """Generic Setter for KB"""
         if field in self.KB:
             self.KB[field] = value
             return True
-        else:
-            print("Key doesn't exist in KB")
-            return False
+        else: return False
 
     def Execute(self):
-         
+        """Execute algorithm from defined list"""
         method = self.getField('search_method')
 
         if method == 'aco':
@@ -73,16 +68,18 @@ class MasterRouter():
             alg = PSO(self,self.width, self.height,True)
         elif method == 'pso_s2':
             alg = PSO(self,self.width, self.height,False)
-            #results = pso.run()    
+   
         return alg.run()
 
-    def Visualise(self):
+    def Visualise(self,stepthrough=False):
+        """Route visualisation"""
         pygame.init()
+        #Initialise Artist, responsible for route drawing
         artist = Artist(self.getField('vehicles'),
                         self.getField('world'),
                         self.width, self.height)
 
-                #Drawing Loop
+        #Drawing Loop
         clock = pygame.time.Clock()
         done = False
         while not done:
@@ -90,7 +87,7 @@ class MasterRouter():
                 if event.type == pygame.QUIT:
                     done = True
                 #Draw
-                artist.Draw()
+                artist.Draw(stepthrough)
 
             clock.tick(10)#Limit FPS
         pygame.quit()
@@ -105,21 +102,10 @@ class MasterRouter():
 
         pathsum = 0
         for v in self.getField('vehicles'):
-            if v.route == None: break#return None
+            if v.route == None: break
             print(v)
+
             pathsum += v.sumRoute()
         pathavg = pathsum / len(self.getField('vehicles'))
         print("Path Avg:{0}\nPath Sum:{1}".format(pathavg,self.RouteSum()))
-        #results = ""
 
-        return None#results
-
-
-
-    # def RouteAlgorithm(self,alg,agents):
-    #     """Route finding algorithm goes here.
-    #     a modular approach allows us to easily 
-    #     implement multiple Routing methods"""
-    #     if alg.lower() == "aco": 
-    #         aco = ACO(self.world,agents)
-    #         return aco.Optimize()

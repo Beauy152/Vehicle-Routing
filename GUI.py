@@ -13,17 +13,30 @@ class InitialSetupGUI:
         pso_settings_frame.grid(pady=10)
 
         Label(gsettings_frame,text="Global Settings").grid(row=0,column=0)
-        self.num_locs_label = Label(gsettings_frame,text="# Locations").grid(row=1,column=0)#.pack(side=TOP)
+        
+        #Location & Vehicle settings
+        self.num_locs_label = Label(gsettings_frame,text="# Locations").grid(row=1,column=0)
         self.num_locs = Spinbox(gsettings_frame,from_=2,to=50,width=10,textvariable=IntVar(value=16))
-        self.num_locs.grid(row=2,column=0)#.pack(side=TOP)#(side=LEFT)
+        self.num_locs.grid(row=2,column=0)
 
         self.num_vehc_label = Label(gsettings_frame,text="# Vehicles").grid(row=1,column=1)
         self.num_vehc = Spinbox(gsettings_frame,from_=1,to=10,width=10,textvariable=IntVar(value=4))
-        self.num_vehc.grid(row=2,column=1)#.pack(side=TOP)#(side=LEFT)
+        self.num_vehc.grid(row=2,column=1)
 
-        #PSO Paramaters
+        #Screen dimensions settings
+        self.screen_width_label = Label(gsettings_frame,text="Screen Width").grid(row=3,column=0)
+        self.screen_width = Spinbox(gsettings_frame,from_=300,to=2560,width=10,textvariable=IntVar(value=550))
+        self.screen_width.grid(row=4,column=0)
+
+        self.screen_height_label = Label(gsettings_frame,text="Screen Height").grid(row=3,column=1)
+        self.screen_height = Spinbox(gsettings_frame,from_=300,to=1440,width=10,textvariable=IntVar(value=550))
+        self.screen_height.grid(row=4,column=1)
+
+
+
+        #PSO Paramater Settings
         Label(pso_settings_frame,text="PSO Settings").grid(row=0,column=0)
-        self.pso_pop_label = Label(pso_settings_frame,text="Swarm Population").grid(row=1,column=0)#.pack(side=TOP)
+        self.pso_pop_label = Label(pso_settings_frame,text="Swarm Population").grid(row=1,column=0)
         self.pso_pop = Spinbox(pso_settings_frame,from_=1,to=500,width=10,textvariable=IntVar(value=25))
         self.pso_pop.grid(row=2,column=0)#.pack(side=TOP)#(side=LEFT)
 
@@ -31,14 +44,21 @@ class InitialSetupGUI:
         self.pso_iter = Spinbox(pso_settings_frame,from_=1,to=2000,width=10,textvariable=IntVar(value=250))
         self.pso_iter.grid(row=2,column=1)#.pack(side=TOP)#(side=LEFT)
         
-
+        #Use default Google Data
         self.useGoogleData = IntVar()
         self.useGoogleDataCheck = Checkbutton(root,variable=self.useGoogleData,
                                         text="Use Google OR-Tools test data.",
                                         onvalue=True,offvalue=False)
         self.useGoogleDataCheck.select()
-        self.useGoogleDataCheck.grid(row=3,column=0,pady=10)#.pack()
+        self.useGoogleDataCheck.grid(row=3,column=0,pady=10)
 
+        #Use step through of routes
+        self.useStepping = IntVar()
+        self.useSteppingCheck = Checkbutton(root,variable=self.useStepping,
+                                        text="Step through routes.",
+                                        onvalue=True,offvalue=False)
+        self.useSteppingCheck.select()
+        self.useSteppingCheck.grid(row=4,column=0,pady=10)
 
         methods_frame = Frame(root)
 
@@ -46,19 +66,18 @@ class InitialSetupGUI:
             ("ACO","aco","normal"),
             ("PSO W/Local improvement","pso_s1","normal"),
             ("PSO No Local Improvement","pso_s2","normal"),
-            ("Testing (10-50 Locations)", "test", "normal")
-        ]
+            ("Testing (10-50 Locations)", "test", "normal")]
 
         self.searchMethod = StringVar()
-        self.searchMethod.set("pso_s2")
+        self.searchMethod.set("aco")
 
         for text,val,state in SearchMethods:
             temp = Radiobutton(methods_frame,variable=self.searchMethod,
                                             text=text,value=val,state=state,anchor='w').pack(fill='both')
 
-        methods_frame.grid(row=4,column=0,pady=10)#.pack()
+        methods_frame.grid(row=5,column=0,pady=10)#.pack()
 
-        Button(root,text="Done",width=10,command=self.__getData__).grid(row=5,column=0)
+        Button(root,text="Done",width=10,command=self.__getData__).grid(row=6,column=0)
     
     def getData(self):
         return self.data
@@ -69,8 +88,10 @@ class InitialSetupGUI:
                 'useGoogleData': self.useGoogleData.get(),
                 'method':self.searchMethod.get(),
                 'pso_population':int(self.pso_pop.get()),
-                'pso_iterations':int(self.pso_iter.get())
-                }
-            
+                'pso_iterations':int(self.pso_iter.get()),
+                'screen_width':int(self.screen_width.get()),
+                'screen_height':int(self.screen_height.get()),
+                'use_stepping':self.useStepping.get()}
+        #destroy the settings gui when starting
         self.root.destroy()
         

@@ -8,8 +8,6 @@ from Packages import Package
 from Statics import COL_LIST,BLUE,YELLOW,GREEN,RED
 
 
-
-
 def TestLocations():
     """Returns location data from google or-tools example"""
     return [(456, 320), # location 0 - the depot
@@ -31,8 +29,7 @@ def TestLocations():
             (798, 640)] # location 16
 
 def TestVehicles():
-    """if n is unspecifed, default is 5,
-    n being the number of delivery agents"""
+    """Google or tools test vehicle specificationss"""
     COLS = sample(COL_LIST,4)
     vehicles = [
         DeliveryAgent(0,0,0,15,BLUE),
@@ -44,6 +41,7 @@ def TestVehicles():
     return vehicles
 
 def RandomLocations(n):
+    """generate n random locations"""
     locations = []
 
     for _ in range(n):
@@ -51,8 +49,6 @@ def RandomLocations(n):
             (randint(0,1000) ,randint(0,1000))
         )
     return locations
-
-
 
 def RandomVehicles(n=5):
     """if n is unspecifed, default is 5,

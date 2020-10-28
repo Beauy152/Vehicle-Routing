@@ -1,11 +1,13 @@
-import TestData
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#MasterAgent.py
 
+import TestData
 from MasterRouter import MasterRouter
 from GUI import InitialSetupGUI
 import Packages as _Packages
 from tkinter import Tk
 import time
-#import resource
 from memory_profiler import memory_usage
 
 def main():
@@ -90,6 +92,7 @@ def main():
         Master.setField("pso_population",Inital_vals['pso_population'])
         Master.setField("pso_iterations",Inital_vals['pso_iterations'])
         if(Inital_vals['useGoogleData']) : 
+            """Initialise with default google-or-tools data"""
 
             Locations = TestData.TestLocations()
             #Testing vehicles
@@ -105,19 +108,8 @@ def main():
 
             #Assign Masters World View
             Master.setWorld(Locations)
-
-            #These methods will be changed to allow us to step through the program as it executes live
-
-            #Performs selected optimisation algoritm.
-            Master.Execute()
-            #
-            Master.Stats()
-
-            #start visualisation
-            Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
-
-
         else:
+            """Initialise with randomised values"""
             Locations = TestData.RandomLocations(Inital_vals['num_locations'])
             #Create vehicles
             Vehicles = TestData.RandomVehicles( Inital_vals['num_vehicles'] )
@@ -133,17 +125,14 @@ def main():
             #Assign Masters World View
             Master.setWorld(Locations)
 
-            #These methods will be changed to allow us to step through the program as it executes live
+        #Performs selected optimisation algoritm.
+        Master.Execute()
 
-            #Performs selected optimisation algoritm.
-            Master.Execute()
+        #Show routes & Route statistics on completion
+        Master.Stats()
 
-            #Show routes & Route statistics on completion
-            Master.Stats()
-
-            #start visualisation
-            Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
-
+        #start visualisation
+        Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
 
 
 

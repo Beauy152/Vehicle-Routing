@@ -1,4 +1,11 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#Mapping.py
 
+"""This file heavily employs OOP principles of inheritance & 
+polymorphism to reduce complexity for certain algorithms.
+In this way, PSO doesn't have to worry about overhead related to additional
+attributes used by ACO"""
 from math import sqrt
 
 class Point():
@@ -79,7 +86,7 @@ class Core_Neighbour():
         return "{0} : packages:[{1}]".format(self.coords,package_str)
 
 class ACO_Neighbour(Core_Neighbour):
-    """inherits point class, extends with distance"""
+    """inherits Core_neighbour class, extends ACO properties"""
     def __init__(self,_L,_D,_S):
         super().__init__(_L,_D,_S)
         #Pheremone level of path between location and neighbor
@@ -90,8 +97,6 @@ class ACO_Neighbour(Core_Neighbour):
         self.Score = None
         #Probability of selection amongst other neighbors
         self.Probability = None
-        #Weight of package being delivered to neighbor
-        #self.PackageWeight = _P
 
 
     def SetPheremone(self, aNum):
@@ -105,12 +110,10 @@ class ACO_Neighbour(Core_Neighbour):
 
     def CalculateScore(self):
         #Calculates individual score based off distance heuristic, pheremone level and savings
-        #self.Score = ((1 / self.Distance) * (self.PheremoneLvl) * (self.Savings))
         self.Score = ((1 / self.Distance) * (self.PheremoneLvl))
 
     def CalculateProbability(self, aSum):
         #Calculates probability of selection
-        # if self.Score==0 and aSum==0:return 0
         if (self.Score==0 or self.Score==0.0) and (aSum==0 or aSum==0.0):return 0
         self.Probability = (self.Score / aSum)
 
@@ -119,7 +122,6 @@ class ACO_Neighbour(Core_Neighbour):
         return self.Score
 
     def GetProbability(self):
-
         return self.Probability
 
     def __repr__(self):
@@ -128,6 +130,7 @@ class ACO_Neighbour(Core_Neighbour):
                                                     self.PheremoneLvl, self.Score, self.Probability)
 
 class ACO_Location(Core_Location):
+    """Extends core location, extending with ACO properties"""
     def __init__(self,_X,_Y,_Packages,_T='l'):
         super().__init__(_X,_Y,_Packages,_T)
         self.Probabilities = []
@@ -142,18 +145,12 @@ class ACO_Location(Core_Location):
 
     def ScoreSum(self):
         #Calculates sum of scores over each neighbor
-        # lSum = sum(n.GetScore() for n in self.neighbours)
-        # return lSum
         lSum = 0
         for lNeighbor in self.neighbours:
             lSum = lSum + lNeighbor.GetScore()
         return lSum
     
     def CalculateProbabilities(self):
-        #NOTE
-        #If this is the probability of a neighbour being selected, then shouldn't it be:
-        # 1/n, where n is the number of neighbours? in which case, each neighbour is equally likely to be chosen?
-        #or is weighted based on distance...
         #Calculates individual probabilities for each neighbor
         lCurrentProb = []
         for lNeighbor in self.neighbours:
@@ -162,11 +159,9 @@ class ACO_Location(Core_Location):
 
         self.Probabilities = lCurrentProb
 
-
 class PSO_Location(Core_Location):
     def __init__(self,_X,_Y,_Packages,_T='l'):
         super().__init__(_X,_Y,_Packages,_T)
-        #p.all_visited = False
 
     def __repr__(self):
         return "PSO_L: X:{0},Y:{1}".format(self.X,self.Y)
@@ -176,9 +171,8 @@ class PSO_Neighbour(Core_Neighbour):
         super().__init__(_L,_D,_S)   
 
 
-
-
 class Map():
+    """Essentially a container class, simplifies access to locations & depots"""
     def __init__(self,search_method,_locations, _packages):
         #convert locations to relevant type
         if(search_method == 'aco'):
@@ -194,16 +188,17 @@ class Map():
         self.locations = [ self.location_type( l[0], l[1], [p for p in _packages if p.location is l] ) 
                             for l in _locations ]
 
+        #locations with no packages are coloured light grey
         for l in self.locations:
-            if len(l.packages) < 1: l.Type = 'np'#no package
+            if len(l.packages) < 1: l.Type = 'np'#no packages
+
         #set first item in array as type depot
         self.locations[0].Type = 'd'  
         self.locations[0].packages = []
 
-        #Single array of warehouse coordinates
+        #Single array of depot coordinates
         self.depot = []
-        self.depot.append(self.locations[0])#_warehouse
-        #depot_neighbours 
+        self.depot.append(self.locations[0])
         #Array of Location objects
         self.InitLocations(self.neighbour_type)
 
@@ -222,14 +217,10 @@ class Map():
                             self.CalcDistance(l,n), 
                             self.CalcSavings(l, n) 
                         ))
-            #l.CalculateProbabilities()
-
-
-
 
     def CalcSavings(self, aStartLoc, aEndLoc):
-        #return (self.CalcDistance(self.depot[0], aStartLoc) + self.CalcDistance(self.depot[0], aEndLoc) - self.CalcDistance(aStartLoc, aEndLoc))
         return (self.CalcDistance(self.depot[0], aStartLoc) + self.CalcDistance(self.depot[0], aEndLoc) - self.CalcDistance(aStartLoc, aEndLoc))
+        
     def __repr__(self):
         result = "["
         for l in self.locations:

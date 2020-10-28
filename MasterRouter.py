@@ -10,6 +10,8 @@ from Search_Methods.PSO import PSO
 from Search_Methods.ACO import ACO
 
 class MasterRouter():
+    """Central Controller. responsible for collecting & storing data, executing algorithms,
+    and performing route visualistion /delegation."""
     def __init__(self,search_method,width,height):
         self.width = width
         self.height = height
@@ -56,7 +58,9 @@ class MasterRouter():
         if field in self.KB:
             self.KB[field] = value
             return True
-        else: return False
+        else:
+            self.KB.update({field:value})
+            return False
 
     def Execute(self):
         """Execute algorithm from defined list"""
@@ -93,9 +97,11 @@ class MasterRouter():
         pygame.quit()
     
     def RouteSum(self):
+        """Sums all routes"""
         return sum(v.sumRoute() for v in self.getField('vehicles'))
 
     def Stats(self):
+        """outputs route statistics, sum, average, weights, ect..."""
         print("Num Vehicles:{0}\nNum Locations:{1}"\
             .format(len(self.getField('vehicles')),
                     len(self.getField('world').locations) ))

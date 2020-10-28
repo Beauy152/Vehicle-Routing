@@ -5,7 +5,6 @@
 from random import choice,randint
 
 def GeneratePackages(total_capacity,_locations):
-    print("Generating Random Packages")
     """Create a list of packages, with a max weight
     of no more than the combined carry capacity of
     all delivery agents"""
@@ -21,7 +20,6 @@ def GeneratePackages(total_capacity,_locations):
         else:
             remaining_capacities = remaining_capacities - rand_weight
             
-
         Packages.append( 
             Package(
                 choice(locations),rand_weight) 
@@ -29,20 +27,20 @@ def GeneratePackages(total_capacity,_locations):
 
     return Packages
 
-
 def TestPackages(Locations):
-    print("Generating Test Packages")
+    """Google or tools example package data"""
     Packages = []
     data = [0, 1, 1, 2, 4, 2, 4, 8, 8, 1, 2, 1, 2, 4, 4, 8, 8]
     for i in range(len(data)):
         Packages.append(Package(
             Locations[i],
-            data[i]
-            ))
+            data[i] ) )
     return Packages
 
 
 class Package():
+    """Package class, each pacakge is assigned a package,
+    some locations may not be assigned any packages"""
     def __init__(self,_location,_weight):
         self.location = _location
         self.weight   = _weight

@@ -294,9 +294,10 @@ class PSO:
         """Main entry point, this function encapsulates all necessary orchestration"""
         #9. Stopping criteria
         K = 5 #num of neighbours; arbirary value
-        T = iterations
+        T = self.Master.getField("pso_iterations")
+        population = self.Master.getField("pso_population")
         
-        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--\nT(%s) P(%s)" % (self.local_improvement,iterations,population)) 
+        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--\nT(%s) P(%s)" % (self.local_improvement,T,population)) 
         for t in range(1,T):
             #1. Initialise
             vehicles = self.vehicles

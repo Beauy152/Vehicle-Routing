@@ -1,13 +1,17 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#GUI.py
+
 from tkinter import Button,Spinbox,Tk,Label,Checkbutton,IntVar,StringVar,Radiobutton,Frame,LEFT,RIGHT,TOP
 
 class InitialSetupGUI:
-
+    """Tkinter gui manager wrapper class"""
     def __init__(self,title,root):
         self.data = None
         self.root = root
         self.root.title(title)
         gsettings_frame = Frame(root)
-        gsettings_frame.grid(pady=10)#@.pack(side=TOP)#.pack(side=TOP)
+        gsettings_frame.grid(pady=10)
 
         pso_settings_frame = Frame(root)
         pso_settings_frame.grid(pady=10)
@@ -31,8 +35,6 @@ class InitialSetupGUI:
         self.screen_height_label = Label(gsettings_frame,text="Screen Height").grid(row=3,column=1)
         self.screen_height = Spinbox(gsettings_frame,from_=300,to=1440,width=10,textvariable=IntVar(value=550))
         self.screen_height.grid(row=4,column=1)
-
-
 
         #PSO Paramater Settings
         Label(pso_settings_frame,text="PSO Settings").grid(row=0,column=0)
@@ -83,6 +85,7 @@ class InitialSetupGUI:
         return self.data
 
     def __getData__(self):
+        """fetch data from widgets, store, then destroy root"""
         self.data = {'num_locations': int(self.num_locs.get()),
                 'num_vehicles' : int(self.num_vehc.get()),
                 'useGoogleData': self.useGoogleData.get(),

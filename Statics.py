@@ -1,3 +1,8 @@
+#Intelligent Systems Project Assignment
+#Authors: Daniel Nelson, Tyler Beaumont
+#Statics.py
+"""This file containss only colour related definitions required for gui"""
+
 GREY = (  54,  54,  54)
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)

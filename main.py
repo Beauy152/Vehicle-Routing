@@ -22,14 +22,19 @@ def main():
 
 
     if (Inital_vals['method'].lower() == "test") :
-        #Loop for both methods
-        for x in range(3):
+        for x in range(2):
             if x == 0:
-                lMethod = 'aco'
-            elif x == 1:
                 lMethod = 'pso_s1'
             else:
                 lMethod = 'pso_s2'
+        #Loop for both methods
+                        # for x in range(3):
+                        #     if x == 0:
+                        #         lMethod = 'aco'
+                        #     elif x == 1:
+                        #         lMethod = 'pso_s1'
+                        #     else:
+                        #         lMethod = 'pso_s2'
             #Initialize variables
             Master = MasterRouter(lMethod,500,500)
             lAcoMem = [0] * 5
@@ -46,7 +51,8 @@ def main():
                 Packages = _Packages.GeneratePackages(Master.getField('capacity_sum'),Locations )
                 Master.setPackages(Packages)
                 Master.setWorld(Locations)
-
+                Master.setField("pso_population",Inital_vals['pso_population'])
+                Master.setField("pso_iterations",Inital_vals['pso_iterations'])
                 #Start timer
                 lStart = time.time()
                 #Execute algorithm checking memory usage
@@ -73,7 +79,7 @@ def main():
                 lAcoTime[index] /= 10
 
 
-            lFile = open("TestResults.txt", "a")
+            lFile = open("Balanced_as_all_things_should_be.txt", "a")
             
             lFile.write("Method: " + lMethod.upper() + "\n")
 

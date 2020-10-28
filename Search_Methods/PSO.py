@@ -437,18 +437,18 @@ class PSO:
             # self.vehicles[i].route.append(self.world.depot[0])
             # self.vehicles[i].route.insert(0,self.world.depot[0])
 
-    def run(self,iterations = 750):
+    def run(self,population=25,iterations = 250):
         #9. Stopping criteria
         K = 5 #num of neighbours; arbirary value
         T = iterations
         #
-        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--" % self.local_improvement) 
+        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--\nT(%s) P(%s)" % (self.local_improvement,iterations,population)) 
         for t in range(1,T):
             #inertia = 0.4 + ( ((t-1)-T) / (1-T) ) * (0.9 - 0.4)
             #1. Initialise
             vehicles = self.vehicles
 
-            swarm = Swarm(50, vehicles,self.width,self.height,self.world.locations)       
+            swarm = Swarm(population, vehicles,self.width,self.height,self.world.locations)       
 
             #2. Deocode
             swarm.decode(self.world,self.local_improvement)

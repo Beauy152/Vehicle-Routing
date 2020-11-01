@@ -32,10 +32,10 @@ def TestVehicles():
     """Google or tools test vehicle specificationss"""
     COLS = sample(COL_LIST,4)
     vehicles = [
-        DeliveryAgent(0,0,0,15,BLUE),
-        DeliveryAgent(1,0,0,15,YELLOW),
-        DeliveryAgent(2,0,0,15,GREEN),
-        DeliveryAgent(3,0,0,15,RED)
+        DeliveryAgent(0,15,BLUE),
+        DeliveryAgent(1,15,YELLOW),
+        DeliveryAgent(2,15,GREEN),
+        DeliveryAgent(3,15,RED)
     ]
 
     return vehicles
@@ -57,7 +57,7 @@ def RandomVehicles(n=5):
     COLS = sample(COL_LIST,n)
     for _id in range(n):
         capacity = randint(50,100)
-        agent = DeliveryAgent(_id,0,0,capacity,COLS[_id])
+        agent = DeliveryAgent(_id,capacity,COLS[_id])
         vehicles.append( agent )#pos=(0,0) : all vehicles start at depot
 
     return vehicles

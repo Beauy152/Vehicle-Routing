@@ -1,7 +1,6 @@
 import pygame
 import pygame.gfxdraw
 from Statics import *
-from time import sleep
 #from Mapping import *
 
 class Artist():
@@ -48,7 +47,7 @@ class Artist():
                 self.doNodes(self.world.depot)#draw depot only
                 self.doNodes(self.world.locations)#draw remaining locations
                 pygame.display.update()
-                sleep(0.5)
+                pygame.time.delay(500)#sleep(0.5)
 
     def Draw(self,stepthrough):
         """Encapsulates all drawing behaviours"""

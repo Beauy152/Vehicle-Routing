@@ -9,9 +9,13 @@ import Packages as _Packages
 from tkinter import Tk
 import time
 from memory_profiler import memory_usage
+from Statics import StartupMessage
 
 def main():
     """GUI Manager for inital setup of values"""
+
+    print(StartupMessage)
+
     root = Tk()
     #Initialize GUI
     InitalSetupView = InitialSetupGUI("title",root)

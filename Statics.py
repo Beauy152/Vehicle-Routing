@@ -3,6 +3,8 @@
 #Statics.py
 """This file containss only colour related definitions required for gui"""
 
+StartupMessage = "Intelligent Systems Assignment 1.\nAuthors: Daniel N & Tyler B.\n"
+
 GREY = (  54,  54,  54)
 BLACK= (   0,   0,   0)
 WHITE= ( 255, 255, 255)

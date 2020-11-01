@@ -287,8 +287,10 @@ class PSO:
 
     def AssignRoutes(self,routes):
         """Assign final route set to each vehicle"""
+        #print("Assigning Routes to Vehicles")
         for i in range(len(self.vehicles)):
             self.vehicles[i].route = routes[i]
+            print(self.vehicles[i].id + ": Route Assigned.")
 
     def run(self,population=25,iterations = 250):
         """Main entry point, this function encapsulates all necessary orchestration"""
@@ -297,7 +299,7 @@ class PSO:
         T = self.Master.getField("pso_iterations")
         population = self.Master.getField("pso_population")
         
-        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--\nT(%s) P(%s)" % (self.local_improvement,T,population)) 
+        print("--Particle Swarm Optimisation--\n--Local Improvements:%s--\nT(%s) P(%s)\n" % (self.local_improvement,T,population)) 
         for t in range(1,T):
             #1. Initialise
             vehicles = self.vehicles

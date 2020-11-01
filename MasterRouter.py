@@ -1,7 +1,8 @@
 #Intelligent Systems Project Assignment
 #Authors: Daniel Nelson, Tyler Beaumont
 #MasterAgent.py
-
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from Mapping import Map
 from Artist import Artist
 import pygame
@@ -13,6 +14,7 @@ class MasterRouter():
     """Central Controller. responsible for collecting & storing data, executing algorithms,
     and performing route visualistion /delegation."""
     def __init__(self,search_method,width,height):
+        self.id = "Master"
         self.width = width
         self.height = height
         self.KB = {#Knowledge base. vehicle information
@@ -27,17 +29,23 @@ class MasterRouter():
 
     def setVehicles(self,vehicles):
         """Assigns vehicles & their cumulative capacity to KB"""
-        temp_capacity_sum = \
-            sum(v.capacity for v in vehicles)
+        print(self.id +": Recieving List of Available Vehicles...")
+        capacity_sum = 0
+        for v in vehicles:
+            capacity_sum += v.getCapacity(self.id)
 
         self.KB['vehicles'] = vehicles
-        self.KB['capacity_sum'] = temp_capacity_sum
+        self.KB['capacity_sum'] = capacity_sum
+
+        print("{0}: Sum of all Capacities is:{1}\n".format(self.id,capacity_sum))
 
     def setPackages(self,packages):
         """Assigns packages & their cumulative weight to KB"""
+        print(self.id +": Recieving List of Packages...")
         temp_package_sum = \
             sum(p.weight for p in packages)
 
+        print(self.id + ": Sum of Package Weights:"+ str(temp_package_sum) + "\n")
         self.KB['packages'] = packages
         self.KB['package_sum'] = temp_package_sum
 
@@ -93,7 +101,7 @@ class MasterRouter():
                 #Draw
                 artist.Draw(stepthrough)
 
-            clock.tick(10)#Limit FPS
+            clock.tick(30)#Limit FPS
         pygame.quit()
     
     def RouteSum(self):

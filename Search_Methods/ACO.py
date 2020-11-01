@@ -89,7 +89,7 @@ class ACO():
             self.fAgents[lIndex].route = lRoute
             #Append to updated agent array
             lRoutedAgents.append(self.fAgents[lIndex])
-
+            print(self.fAgents[lIndex].id + ": Route Assigned.")
         return lRoutedAgents
         
     def UpdateGlobal(self):

@@ -25,10 +25,10 @@ class Ant():
         #Current route cost
         self.RouteCost = 0
         #Best Neighbor at current location
-        self.BestNeighbor = None#min(aLocation.neighbours,key=lambda x:x.Distance) #None
+        self.BestNeighbor = None
         #Boolean indicating more locations to visit
         self.MoreLocations = True
-
+        #Local visited location array
         self.LocalVisited = []
 
     def CalculateMove(self, aVisited, aMap):
@@ -37,14 +37,17 @@ class Ant():
         self.Location.CalculateScores()
         #Calculate individual probabilities
         self.Location.CalculateProbabilities()
-
-        lTest = self.Location.GetNeighbors()
+        #Get neighbors
+        lLocalNeighbors = self.Location.GetNeighbors()
 
         lNeighbors = []
         lProbs = []
         
-        for lNeighbor in lTest:
+        #Loop over neighbors
+        for lNeighbor in lLocalNeighbors:
+            #Check if valid neighbor
             if((lNeighbor.GetPackageWeight() + self.CurrentWeight) <= self.AntCapacity) and (self.SameLoc(lNeighbor, aVisited) == False):
+                #Append to list of valid neighbors and probabilities
                 lNeighbors.append(lNeighbor)
                 lProbs.append(lNeighbor.GetProbability())
                 
@@ -54,12 +57,15 @@ class Ant():
             self.BestNeighbor = random.choices(lNeighbors, weights=lProbs, k=1)
             #Change location
             self.BestNeighbor = self.BestNeighbor[0]
-
+            #Change ant location
             self.Location = self.BestNeighbor.GetLocation()
+            #Add weight of package to tally
             self.CurrentWeight += self.BestNeighbor.GetPackageWeight()
-
+            #Append to visited list
             aVisited.append(self.BestNeighbor)
+            #Append to current route
             self.CurrentRoute.append(self.BestNeighbor)
+            #Add route cost
             self.RouteCost += self.BestNeighbor.GetDist()
 
         else:
@@ -73,6 +79,7 @@ class Ant():
     def UpdateLocal(self): 
         #Update local pheremone 
         if self.BestNeighbor != None:
+            #Apply formula
             self.BestNeighbor.SetPheremone( ( (1 - self.BestNeighbor.GetDecay() ) * self.BestNeighbor.GetPherLvl() + self.PherDelta))
 
 
@@ -95,12 +102,14 @@ class Ant():
         self.UpdateBest()
 
     def SameLoc(self, aNeighbor, aList):
+        #Check if a neighbor is the same as visited list
         for location in aList:
             if aNeighbor.X == location.X and aNeighbor.Y == location.Y:
                 return True
         return False
 
     def ResetAnt(self):
+        #Reset ant stats to default
         self.CurrentRoute = []
         self.CurrentWeight = 0
         self.MoreLocations = True

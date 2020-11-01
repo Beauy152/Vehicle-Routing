@@ -13,6 +13,7 @@ from memory_profiler import memory_usage
 def main():
     """GUI Manager for inital setup of values"""
     root = Tk()
+    #Initialize GUI
     InitalSetupView = InitialSetupGUI("title",root)
     root.mainloop()
 
@@ -34,6 +35,7 @@ def main():
             Master = MasterRouter(lMethod,
                               Inital_vals['screen_width'],
                               Inital_vals['screen_height'])
+            #Declare arrays for each set of location sizes
             lAcoMem = [0] * 5
             lAcoTime = [0] * 5
             lAcoRoute= [0] * 5

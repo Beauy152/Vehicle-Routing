@@ -208,6 +208,7 @@ class Map():
         return sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
 
     def InitLocations(self,neighbour_type):
+        #Loop over locations
         for l in self.locations:
             for n in self.locations:
                 if n != l and n != self.depot[0]:
@@ -219,6 +220,7 @@ class Map():
                         ))
 
     def CalcSavings(self, aStartLoc, aEndLoc):
+        #Apply savings formula
         return (self.CalcDistance(self.depot[0], aStartLoc) + self.CalcDistance(self.depot[0], aEndLoc) - self.CalcDistance(aStartLoc, aEndLoc))
         
     def __repr__(self):

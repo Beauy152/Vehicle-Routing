@@ -1,8 +1,6 @@
 #Intelligent Systems Project Assignment
 #Authors: Daniel Nelson, Tyler Beaumont
 #ACO.py
-#from RouteMap import RouteMap
-#from RouteMap import Neighbour
 from Mapping import Map,ACO_Neighbour as Neighbour
 from Search_Methods.Ant import Ant
 from DeliveryAgent import DeliveryAgent
@@ -23,8 +21,9 @@ class ACO():
         self.BestAnt = None
         #Best route cost
         self.BestCost = None
-
+        #Best group of routes 
         self.BestRouteGroup = []
+        #Best group score (Decreases)
         self.BestGroupScore = 99999
 
 
@@ -41,11 +40,11 @@ class ACO():
             self.ResetColony()
             #Establish a memory so other ants do not visit locations by previous ant routes in current loop
             lVisited = [Neighbour(self.fMap.depot[0], 0, 0)]
-            # for lAnt in self.fColony:
-            #     #Calculate individual ant route
-            #     lAnt.FindRoute(lVisited, self.fMap)
+
             lIndex = 0
+            #Loop until all locations are visited 
             while len(lVisited) < len(self.fMap.locations)  and lIndex < len(self.fColony):
+                #Find a route for each vehicle
                 self.fColony[lIndex].FindRoute(lVisited, self.fMap)
                 lIndex+= 1
 
@@ -54,7 +53,7 @@ class ACO():
             #Apply global pheremone update
             self.UpdateGlobal()
 
-            #Check if best route cost hasnt changed in x iterations (10 for now)
+            #Check if best route cost hasnt changed in x iterations (500 for now)
             if lTempBest == self.BestGroupScore:
                 lCount += 1
                 if (lCount > 500):
@@ -65,8 +64,6 @@ class ACO():
 
         #Allocate agents with routes
         return self.AllocateRoutes()
-        #NOTE Best route is the most optimal, so they would chose the route where they don't visit everything. Need to ensure everything is visited.
-
         
 
     def InitColony(self, aAgents):
@@ -106,12 +103,13 @@ class ACO():
 
 
     def UpdateBest(self):
+        #Calculate total route cost for colony
         lGroupScore = 0
         for lAnt in self.fColony:
             lGroupScore += lAnt.GetRouteCost()
-
+        #Check if better than current best
         if lGroupScore < self.BestGroupScore:
-            
+            #Replace best total route
             self.BestGroupScore = lGroupScore
             self.BestRouteGroup = []
             for lAnt in self.fColony:
@@ -120,7 +118,6 @@ class ACO():
 
 
     def GetBestColRoute(self):
-        #NOTE TO SELF: THE MOST EFFICIENT ROUTE WILL NOT ALWAYS BE THE MOST EFFICIENT (DOES NOT TAKE INTO ACCOUNT PACKAGES COLLECTED)
         lBestCost = 1000
         for lAnt in self.fColony:
             #Check if each ant is more efficient

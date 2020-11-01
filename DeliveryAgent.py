@@ -8,19 +8,21 @@ class DeliveryAgent():
     """Delivery Agent / Vehicle class"""
     def __init__(self,_id,_x=0,_y=0,_capacity=100,_col=(0,0,0) ):
         self.id = "v_%s" % _id
+        #Coordinates
         self.x  = _x
         self.y  = _y
+        #Capacity of agent
         self.capacity = _capacity
+        #Route to be determined
         self.route = None#[]
         self.colour = _col
-
+        #Coordinate references
         self.xref = None
         self.yref = None
         self.r    = None
         self.distances = None
 
-        #vehicle memory
-        #self.mem = {}
+
 
     def Perform(self):
         """execute Route"""
@@ -41,6 +43,7 @@ class DeliveryAgent():
         if self.route == None or len(self.route) < 1:return 0
         else:
             dsum = 0
+            #Calculate sum over route length
             for i in range(len(self.route)):
                 if i == len(self.route)-1:return dsum
                 aStartLoc = self.route[i]
@@ -51,6 +54,7 @@ class DeliveryAgent():
         total = 0
         if len(self.route) < 1 or self.route == None:
             return total
+        #Calculate sum over all packages
         for l in self.route:
             total += l.GetPackageWeight()
 

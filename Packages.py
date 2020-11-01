@@ -35,7 +35,22 @@ def TestPackages(Locations):
         Packages.append(Package(
             Locations[i],
             data[i] ) )
+
     return Packages
+
+def packageListParser(filename,locations):
+    """Opens and parses given file as input package list"""
+    with open(filename,'r') as file:
+        weights = [int(line) for line in file]
+
+
+        packages = []
+        for i,location in enumerate(locations): 
+            packages.append(
+                Package(location,weights[i])
+            )
+
+    return packages
 
 
 class Package():

@@ -64,6 +64,15 @@ class InitialSetupGUI:
             self.useSteppingCheck.select()
         self.useSteppingCheck.grid(row=4,column=0,pady=10)
 
+        #package input file as list
+        self.usePackageList = IntVar()
+        self.usePackageListCheck = Checkbutton(root,variable=self.usePackageList,
+                                        text="Use Package Input File.",
+                                        onvalue=True,offvalue=False)
+        if(defaults['use_package_list'] == 'True'):
+            self.usePackageListCheck.select()
+        self.usePackageListCheck.grid(row=5,column=0,pady=10)
+
         methods_frame = Frame(root)
 
         SearchMethods = [
@@ -79,9 +88,9 @@ class InitialSetupGUI:
             temp = Radiobutton(methods_frame,variable=self.searchMethod,
                                             text=text,value=val,state=state,anchor='w').pack(fill='both')
 
-        methods_frame.grid(row=5,column=0,pady=10)#.pack()
+        methods_frame.grid(row=6,column=0,pady=10)#.pack()
 
-        Button(root,text="Done",width=10,command=self.__getData__).grid(row=6,column=0)
+        Button(root,text="Done",width=10,command=self.__getData__).grid(row=7,column=0)
     
     def getData(self):
         return self.data
@@ -96,7 +105,8 @@ class InitialSetupGUI:
                 'pso_iterations':int(self.pso_iter.get()),
                 'screen_width':int(self.screen_width.get()),
                 'screen_height':int(self.screen_height.get()),
-                'use_stepping':self.useStepping.get()}
+                'use_stepping':self.useStepping.get(),
+                'use_package_list':self.usePackageList.get()}
         #destroy the settings gui when starting
         self.root.destroy()
         

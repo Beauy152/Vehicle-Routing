@@ -6,6 +6,7 @@ import TestData
 from MasterRouter import MasterRouter
 from GUI import InitialSetupGUI
 import Packages as _Packages
+from Packages import packageListParser
 from tkinter import Tk
 import time
 from memory_profiler import memory_usage
@@ -53,8 +54,14 @@ def main():
                 Locations = TestData.RandomLocations(lLocationSize)
                 Vehicles = TestData.RandomVehicles( Inital_vals['num_vehicles'] )
                 Master.setVehicles(Vehicles)
-                Packages = _Packages.GeneratePackages(Master.getField('capacity_sum'),Locations )
-                Master.setPackages(Packages)
+                if Inital_vals['use_package_list']:
+                    Packages = packageListParser('package_input_list.txt')
+                    Master.setPackages(Packages)
+                    Master.EqulaliseVehicles()
+                else:
+                    Packages = _Packages.GeneratePackages(Master.getField('capacity_sum'),Locations )
+                    Master.setPackages(Packages)
+                
                 Master.setWorld(Locations)
                 Master.setField("pso_population",Inital_vals['pso_population'])
                 Master.setField("pso_iterations",Inital_vals['pso_iterations'])
@@ -125,10 +132,16 @@ def main():
             #master will update internal 'capacity_sum'
             Master.setVehicles(Vehicles)
             #Generate Package List
-            Packages = _Packages.GeneratePackages(Master.getField('capacity_sum'),Locations )
+            if Inital_vals['use_package_list']:
+                Packages = packageListParser('package_input_list.txt',Locations)
+                #Assign package list to master
+                Master.setPackages(Packages)
+                Master.EqulaliseVehicles()
+            else:
+                Packages = _Packages.GeneratePackages(Master.getField('capacity_sum'),Locations )
+                #Assign package list to master
+                Master.setPackages(Packages)
 
-            #Assign package list to master
-            Master.setPackages(Packages)
 
             #Assign Masters World View
             Master.setWorld(Locations)

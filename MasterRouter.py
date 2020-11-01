@@ -9,6 +9,7 @@ import pygame
 import pygame.gfxdraw
 from Search_Methods.PSO import PSO
 from Search_Methods.ACO import ACO
+from math import ceil
 
 class MasterRouter():
     """Central Controller. responsible for collecting & storing data, executing algorithms,
@@ -123,3 +124,12 @@ class MasterRouter():
         pathavg = pathsum / len(self.getField('vehicles'))
         print("Path Avg:{0}\nPath Sum:{1}".format(pathavg,self.RouteSum()))
 
+
+    def EqulaliseVehicles(self):
+        """"Takes the input list of packages, and resets vehicle capacties accordingly"""
+        allocation = ceil(self.KB['package_sum'] / len(self.KB['vehicles']) )
+
+        for v in self.KB['vehicles']:
+            v.capacity = allocation
+
+        print(allocation)

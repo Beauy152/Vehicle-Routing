@@ -2,7 +2,6 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #Ant.py
 import random
-import numpy as np
 from Mapping import ACO_Location as Location,ACO_Neighbour as Neighbour
 #RouteMap import Location, Neighbour
 

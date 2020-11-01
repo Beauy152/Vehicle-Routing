@@ -43,3 +43,4 @@ def defaultsParser(filename):
         for line in lines:
             defaults.update({line[0]:line[1].rstrip() })
     return defaults
+

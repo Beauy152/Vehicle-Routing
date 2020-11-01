@@ -8,32 +8,20 @@ class DeliveryAgent():
     """Delivery Agent / Vehicle class"""
     def __init__(self,_id,_capacity=100,_col=(0,0,0) ):
         self.id = "v_%s" % _id
-<<<<<<< Updated upstream
-        #Coordinates
-        self.x  = _x
-        self.y  = _y
         #Capacity of agent
-=======
->>>>>>> Stashed changes
         self.capacity = _capacity
         #Route to be determined
         self.route = None#[]
         self.colour = _col
-<<<<<<< Updated upstream
-        #Coordinate references
-=======
 
         #Variables for PSO
         #Ideally, these should be inherited by a more specific class
         #but this wasn't justifiable for 3 variables...
->>>>>>> Stashed changes
         self.xref = None
         self.yref = None
         self.r    = None
 
         self.distances = None
-
-
 
     def getCapacity(self,requester):
         """return self capcity"""

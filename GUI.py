@@ -6,7 +6,7 @@ from tkinter import Button,Spinbox,Tk,Label,Checkbutton,IntVar,StringVar,Radiobu
 
 class InitialSetupGUI:
     """Tkinter gui manager wrapper class"""
-    def __init__(self,title,root):
+    def __init__(self,title,root,defaults):
         self.data = None
         self.root = root
         self.root.title(title)
@@ -20,30 +20,30 @@ class InitialSetupGUI:
         
         #Location & Vehicle settings
         self.num_locs_label = Label(gsettings_frame,text="# Locations").grid(row=1,column=0)
-        self.num_locs = Spinbox(gsettings_frame,from_=2,to=50,width=10,textvariable=IntVar(value=16))
+        self.num_locs = Spinbox(gsettings_frame,from_=2,to=50,width=10,textvariable=IntVar(value=defaults['num_locations']))
         self.num_locs.grid(row=2,column=0)
 
         self.num_vehc_label = Label(gsettings_frame,text="# Vehicles").grid(row=1,column=1)
-        self.num_vehc = Spinbox(gsettings_frame,from_=1,to=10,width=10,textvariable=IntVar(value=4))
+        self.num_vehc = Spinbox(gsettings_frame,from_=1,to=10,width=10,textvariable=IntVar(value=defaults['num_vehicles']))
         self.num_vehc.grid(row=2,column=1)
 
         #Screen dimensions settings
         self.screen_width_label = Label(gsettings_frame,text="Screen Width").grid(row=3,column=0)
-        self.screen_width = Spinbox(gsettings_frame,from_=300,to=2560,width=10,textvariable=IntVar(value=550))
+        self.screen_width = Spinbox(gsettings_frame,from_=300,to=2560,width=10,textvariable=IntVar(value=defaults['screen_width']))
         self.screen_width.grid(row=4,column=0)
 
         self.screen_height_label = Label(gsettings_frame,text="Screen Height").grid(row=3,column=1)
-        self.screen_height = Spinbox(gsettings_frame,from_=300,to=1440,width=10,textvariable=IntVar(value=550))
+        self.screen_height = Spinbox(gsettings_frame,from_=300,to=1440,width=10,textvariable=IntVar(value=defaults['screen_height']))
         self.screen_height.grid(row=4,column=1)
 
         #PSO Paramater Settings
         Label(pso_settings_frame,text="PSO Settings").grid(row=0,column=0)
         self.pso_pop_label = Label(pso_settings_frame,text="Swarm Population").grid(row=1,column=0)
-        self.pso_pop = Spinbox(pso_settings_frame,from_=1,to=500,width=10,textvariable=IntVar(value=25))
+        self.pso_pop = Spinbox(pso_settings_frame,from_=1,to=500,width=10,textvariable=IntVar(value=defaults['pso_population']))
         self.pso_pop.grid(row=2,column=0)#.pack(side=TOP)#(side=LEFT)
 
         self.pso_iter_label = Label(pso_settings_frame,text="# Iterations").grid(row=1,column=1)
-        self.pso_iter = Spinbox(pso_settings_frame,from_=1,to=2000,width=10,textvariable=IntVar(value=250))
+        self.pso_iter = Spinbox(pso_settings_frame,from_=1,to=2000,width=10,textvariable=IntVar(value=defaults['pso_iterations']))
         self.pso_iter.grid(row=2,column=1)#.pack(side=TOP)#(side=LEFT)
         
         #Use default Google Data
@@ -51,7 +51,8 @@ class InitialSetupGUI:
         self.useGoogleDataCheck = Checkbutton(root,variable=self.useGoogleData,
                                         text="Use Google OR-Tools test data.",
                                         onvalue=True,offvalue=False)
-        self.useGoogleDataCheck.select()
+        if(defaults['use_google_test_data'] == 'True'):
+            self.useGoogleDataCheck.select()
         self.useGoogleDataCheck.grid(row=3,column=0,pady=10)
 
         #Use step through of routes
@@ -59,7 +60,8 @@ class InitialSetupGUI:
         self.useSteppingCheck = Checkbutton(root,variable=self.useStepping,
                                         text="Step through routes.",
                                         onvalue=True,offvalue=False)
-        self.useSteppingCheck.select()
+        if(defaults['use_route_stepping'] == 'True'):
+            self.useSteppingCheck.select()
         self.useSteppingCheck.grid(row=4,column=0,pady=10)
 
         methods_frame = Frame(root)

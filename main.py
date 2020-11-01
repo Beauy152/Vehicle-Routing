@@ -10,6 +10,7 @@ from tkinter import Tk
 import time
 from memory_profiler import memory_usage
 from Statics import StartupMessage
+from genericFunctions import defaultsParser
 
 def main():
     """GUI Manager for inital setup of values"""
@@ -18,7 +19,8 @@ def main():
 
     root = Tk()
     #Initialize GUI
-    InitalSetupView = InitialSetupGUI("title",root)
+    gui_defaults = defaultsParser("GUI_Defaults.txt")
+    InitalSetupView = InitialSetupGUI("title",root,gui_defaults)
     root.mainloop()
 
     Inital_vals = InitalSetupView.getData()

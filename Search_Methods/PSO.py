@@ -104,7 +104,7 @@ class Particle():
         for route in routes:
             total_sum += SumRouteDistance(route)
 
-        return total_sum + (penalty * 5000)#adding penalty for missing locations
+        return total_sum + (penalty * 10000)#adding penalty for missing locations
 
     def decode(self,dimensions,vehicle,world,local_improvement):
         """Decoding takes a particles dimension (which relate to each vehicle),

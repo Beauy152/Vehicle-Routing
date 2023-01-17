@@ -1,7 +1,7 @@
 #Intelligent Systems Project Assignment
 #Authors: Daniel Nelson, Tyler Beaumont
 #Statics.py
-"""This file containss only colour related definitions required for gui"""
+"""This file contains only colour related definitions required for gui"""
 
 StartupMessage = "Intelligent Systems Assignment 1.\nAuthors: Daniel N & Tyler B.\n"
 

@@ -4,9 +4,14 @@
 
 from tkinter import Button,Spinbox,Tk,Label,Checkbutton,IntVar,StringVar,Radiobutton,Frame,LEFT,RIGHT,TOP
 
+# from genericFunctions import defaultsParser
+
 class InitialSetupGUI:
     """Tkinter gui manager wrapper class"""
     def __init__(self,title,root,defaults):
+
+
+
         self.data = None
         self.root = root
         self.root.title(title)

@@ -34,6 +34,7 @@ def SumRouteWeight(route):
     if route == None or len(route) < 1: return 0
     return sum(l.GetPackageWeight() for l in route)
 
+
 def defaultsParser(filename):
     """Opens given file and parses as gui defaults format"""
     defaults = {}
@@ -43,4 +44,3 @@ def defaultsParser(filename):
         for line in lines:
             defaults.update({line[0]:line[1].rstrip() })
     return defaults
-

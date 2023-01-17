@@ -1,0 +1,18 @@
+Method: ACO
+Locations (10) : Average Time (0.4611140489578247), Max Memory (82.940625), Average Route Length (2570.5362977936193)
+Locations (20) : Average Time (0.5442842483520508), Max Memory (83.740625), Average Route Length (8716.5376289851)
+Locations (30) : Average Time (1.2630897045135498), Max Memory (85.0328125), Average Route Length (11363.200258298679)
+Locations (40) : Average Time (2.570086717605591), Max Memory (86.4375), Average Route Length (14515.720706028724)
+Locations (50) : Average Time (4.241776943206787), Max Memory (77.25625), Average Route Length (14031.651784346457)
+Method: PSO_S1
+Locations (10) : Average Time (1.1510291337966918), Max Memory (85.5421875), Average Route Length (5725.587250770595)
+Locations (20) : Average Time (1.9969941616058349), Max Memory (85.671875), Average Route Length (8973.993287508923)
+Locations (30) : Average Time (3.317142939567566), Max Memory (85.671875), Average Route Length (10397.019589188212)
+Locations (40) : Average Time (5.301652336120606), Max Memory (85.671875), Average Route Length (12427.576428146114)
+Locations (50) : Average Time (7.229411888122558), Max Memory (77.109375), Average Route Length (12631.212703082227)
+Method: PSO_S2
+Locations (10) : Average Time (1.0080719470977784), Max Memory (85.6875), Average Route Length (5168.683696422366)
+Locations (20) : Average Time (1.5516851902008058), Max Memory (85.6875), Average Route Length (9130.667315699373)
+Locations (30) : Average Time (2.259306001663208), Max Memory (85.6875), Average Route Length (11272.66674619161)
+Locations (40) : Average Time (3.0081336736679076), Max Memory (85.6875), Average Route Length (13337.31577037049)
+Locations (50) : Average Time (3.358855700492859), Max Memory (77.11875), Average Route Length (13534.953370942652)

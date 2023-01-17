@@ -1,7 +1,6 @@
 #Intelligent Systems Project Assignment
 #Authors: Daniel Nelson, Tyler Beaumont
 #MasterAgent.py
-
 import TestData
 from MasterRouter import MasterRouter
 from GUI import InitialSetupGUI
@@ -153,6 +152,7 @@ def main():
         Master.Stats()
 
         #start visualisation
+        # while not msvcrt.kbhit() and msvcrt.getch() == chr(27).encode():
         Master.Visualise(stepthrough=Inital_vals['use_stepping'])#can take width & height
 
 

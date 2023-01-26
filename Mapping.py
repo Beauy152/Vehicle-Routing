@@ -8,6 +8,7 @@ In this way, PSO doesn't have to worry about overhead related to additional
 attributes used by ACO"""
 from math import sqrt
 
+
 class Point():
     def __init__(self,_X,_Y):
         self.X = _X
@@ -15,7 +16,6 @@ class Point():
         self.coords = (_X,_Y)
     def __repr__(self):
         return "X:{0},Y:{1}".format(self.X,self.Y)
-
 
 class Core_Location(Point):
     """inherits point class"""

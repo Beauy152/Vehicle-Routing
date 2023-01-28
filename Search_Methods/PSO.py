@@ -3,7 +3,7 @@
 #PSO.py
 
 from random import randint
-from genericFunctions import CalcDistance2,CalcDistance3,CalcDistance4,SumRouteWeight,\
+from MVCVersion.genericFunctions import CalcDistance2,CalcDistance3,CalcDistance4,SumRouteWeight,\
 CalcDimensionalDistance,SumRouteDistance
 
 

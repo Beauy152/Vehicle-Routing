@@ -19,6 +19,8 @@ class Artist:
 
     def drawLocations(self,depot:'Location',locations:list['Location']):
         self.clear()
+
+        self.drawLocation(depot)
         for location in locations:
             self.drawLocation(location)
 
@@ -33,13 +35,13 @@ class Artist:
     def drawPaths(self,vehicles:list['DeliveryAgent']):
         for vehicle in vehicles:
             for i,location in enumerate(locations:= vehicle.route):
-                if i >= len(locations):
+                if i >= len(locations)-1:
                     break
                 else:
-                    self.drawPath(location,locations[i+1])
+                    self.drawPath(location,locations[i+1],vehicle.colour)
 
-    def drawPath(self,l1:'Location',l2:'Location'):
+    def drawPath(self,l1:'Location',l2:'Location',colour='orange'):
         self.canvas.create_line(
-            l1.x,l1.y,l2.x,l2.y,fill='orange',width=2
+            l1.x,l1.y,l2.x,l2.y,fill=colour,width=2
         )
         

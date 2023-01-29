@@ -45,7 +45,7 @@ class Ant():
         #Loop over neighbors
         for lNeighbor in lLocalNeighbors:
             #Check if valid neighbor
-            if((lNeighbor.GetPackageWeight() + self.CurrentWeight) <= self.AntCapacity) and (self.SameLoc(lNeighbor, aVisited) == False):
+            if((lNeighbor.sumPackages() + self.CurrentWeight) <= self.AntCapacity) and (self.SameLoc(lNeighbor, aVisited) == False):
                 #Append to list of valid neighbors and probabilities
                 lNeighbors.append(lNeighbor)
                 lProbs.append(lNeighbor.GetProbability())
@@ -59,7 +59,7 @@ class Ant():
             #Change ant location
             self.Location = self.BestNeighbor.GetLocation()
             #Add weight of package to tally
-            self.CurrentWeight += self.BestNeighbor.GetPackageWeight()
+            self.CurrentWeight += self.BestNeighbor.sumPackages()
             #Append to visited list
             aVisited.append(self.BestNeighbor)
             #Append to current route

@@ -55,7 +55,7 @@ class ConfigurationGUI(tk.CTk):
 
         self.ButtonSettings = ButtonComponents(self.frame_controls,
         on_refresh=self.onRefreshClicked,
-        on_submit=[self.onRefreshClicked,self.onSubmitClicked]
+        on_submit=self.onSubmitClicked
             )
 
         # CANVAS

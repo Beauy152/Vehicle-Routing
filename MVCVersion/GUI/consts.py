@@ -5,23 +5,27 @@
 
 StartupMessage = "Intelligent Systems Assignment 1.\nAuthors: Daniel N & Tyler B.\n"
 
-GREY = (  54,  54,  54)
-BLACK= (   0,   0,   0)
-WHITE= ( 255, 255, 255)
-LGREY= ( 212, 212, 212)
+def rgb_to_hex(r,g,b):
+    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
-BLUE = (  84, 131, 179)
-MINT = ( 130, 255, 193)
-GREEN= (  57, 143,  57)
-YELLOW=( 255, 241, 120)
-ORANGE=( 255, 200, 138)
-PINK  =( 252, 157, 157)
-RED   =( 235,  63,  63)
-NIGHT =( 140, 136, 181)
-PURPLE=(  68,  57, 184)
-SKY   =( 168, 245, 255)
-CYAN  =(   7, 186, 186)
-MAGENTA=(177,  18, 201)
+
+GREY = rgb_to_hex(  54,  54,  54)
+BLACK= rgb_to_hex(   0,   0,   0)
+WHITE= rgb_to_hex( 255, 255, 255)
+LGREY= rgb_to_hex( 212, 212, 212)
+
+BLUE = rgb_to_hex(  84, 131, 179)
+MINT = rgb_to_hex( 130, 255, 193)
+GREEN= rgb_to_hex(  57, 143,  57)
+YELLOW=rgb_to_hex( 255, 241, 120)
+ORANGE=rgb_to_hex( 255, 200, 138)
+PINK  =rgb_to_hex( 252, 157, 157)
+RED   =rgb_to_hex( 235,  63,  63)
+NIGHT =rgb_to_hex( 140, 136, 181)
+PURPLE=rgb_to_hex(  68,  57, 184)
+SKY   =rgb_to_hex( 168, 245, 255)
+CYAN  =rgb_to_hex(   7, 186, 186)
+MAGENTA=rgb_to_hex(177,  18, 201)
 
 
 COLOURS = {

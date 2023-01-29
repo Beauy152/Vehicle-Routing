@@ -13,7 +13,7 @@ class Model:
         self._locations : list[Location]       = None
         self._packages  : list[Package]        = None 
         self._depot     : Location             = None
-
+        self._isset     : bool = False
     @property
     def settings(self) -> dict[str,any]:
         return self._settings
@@ -53,6 +53,14 @@ class Model:
     @depot.setter
     def depot(self, value:Location) -> None:
         self._depot = value
+
+    @property
+    def isset(self) -> bool:
+        return self._isset
+
+    @isset.setter
+    def isset(self, value:bool) -> None:
+        self._isset = value
 
     @property
     def approach(self) -> ApproachFactory:

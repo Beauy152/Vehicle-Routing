@@ -12,7 +12,7 @@ class Controller:
 
     def applySettings(self,settings:dict[str,any]):
         self.model.settings.update(settings)
-        self.applyDefaults()
+        if not self.model.isset: self.applyDefaults()
         print(self.model.settings)
         self.view.artist.drawLocations(self.model.depot,self.model.locations)
 
@@ -32,6 +32,7 @@ class Controller:
                             else GeneratePackages(
                                 sum(v.capacity for v in self.model.vehicles),
                                 self.model.locations)
+        self.model.isset = True
 
     def runApproach(self):
         self.model.approach.runApproach(

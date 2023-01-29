@@ -19,8 +19,8 @@ class ApproachFactory(ABC):
         """
 
         # Call the factory method to create a Product object.
-        apporach = self.factory_method()
+        apporach = self.factory_method(settings,vehicles,locations,depot,packages)
         # Now, use the product.
-        result = apporach.run(settings,vehicles,locations,depot,packages)
+        result = apporach.run()
         return result
 

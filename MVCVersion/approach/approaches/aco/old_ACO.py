@@ -2,7 +2,7 @@
 #Authors: Daniel Nelson, Tyler Beaumont
 #ACO.py
 from Mapping import Map,ACO_Neighbour as Neighbour
-from Search_Methods.Ant import Ant
+from Search_Methods.old_ant import Ant
 from DeliveryAgent import DeliveryAgent
 
 class ACO():

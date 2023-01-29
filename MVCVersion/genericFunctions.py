@@ -1,4 +1,9 @@
 from math import sqrt
+from entities.new_mapping import Location
+
+
+def calcDistance(start:Location,end:Location):
+    return sqrt( (end.x - start.x)**2 + (end.y - start.y)**2 )
 
 def CalcDistance2(aStartLoc, aEndLoc):
     """takes two objects, with attributes x&y"""
@@ -19,20 +24,20 @@ def CalcDimensionalDistance(D1,D2):
         result += (d2 - d1)**2
     return sqrt(result)
 
-def SumRouteDistance(route):
-    """sums the distance between all locations in route"""
-    total_dist = 0
-    if len(route) < 1 : return total_dist
-    for i in range(len(route)-1):
-        aStartLoc = route[i]
-        aEndLoc = route[i+1]
-        total_dist += sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
-    return total_dist
+# def SumRouteDistance(route):
+#     """sums the distance between all locations in route"""
+#     total_dist = 0
+#     if len(route) < 1 : return total_dist
+#     for i in range(len(route)-1):
+#         aStartLoc = route[i]
+#         aEndLoc = route[i+1]
+#         total_dist += sqrt( (aEndLoc.X - aStartLoc.X)**2 + (aEndLoc.Y - aStartLoc.Y)**2 )
+#     return total_dist
 
-def SumRouteWeight(route):
-    """sums the weight of all packages of locations in route"""
-    if route == None or len(route) < 1: return 0
-    return sum(l.GetPackageWeight() for l in route)
+# def SumRouteWeight(route):
+#     """sums the weight of all packages of locations in route"""
+#     if route == None or len(route) < 1: return 0
+#     return sum(l.GetPackageWeight() for l in route)
 
 
 def defaultsParser(filename):

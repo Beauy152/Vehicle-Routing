@@ -42,9 +42,12 @@ class ConfigurationGUI(tk.CTk):
             width=self._canvas_width,height=self._canvas_height )
         self.frame_controls.pack(fill=BOTH,side=LEFT)
 
-        #   CONTROLS
+        # DEFAULT VALUES  
         BaseComponent._debug    :bool = False
-
+        BaseComponent._width    :float= self._canvas_width
+        BaseComponent._height   :float= self._canvas_height
+        
+        # CONTROLS
         self.GlobalSettings = GlobalSettings(self.frame_controls)
         self.PsoSettings    = PsoSettings(self.frame_controls)
         self.MapSettings    = MapSettings(self.frame_controls)
@@ -64,53 +67,14 @@ class ConfigurationGUI(tk.CTk):
 
         self.artist = Artist(self._canvas)
 
-    def onRefreshClicked(self):
+    def onRefreshClicked(self) -> None:
         self.controller.applySettings(
             self.GlobalSettings.getAllValues()
         )
 
-    def onSubmitClicked(self):
+    def onSubmitClicked(self) -> None:
         self.onRefreshClicked()
         self.controller.runApproach()
 
-
-
-
-    # def refreshMap(self):
-    #     self.getConfigurationValues()
-        
-    #     self.locations.clear()
-    #     Location.maxX = 0
-    #     Location.maxY = 0
-
-    #     locations = self.router.setLocations()
-
-    #     self._canvas.delete('all')
-    #     for location in locations:
-    #         location.draw(self.artist)
-
-    # def drawRoutes(self):
-    #     for vehicle in self.router.vehicles:
-    #         for i,location in enumerate(locations := vehicle.route):
-    #             if i+1 >= len(locations): 
-    #                 break
-    #             else:
-    #                 self.artist.drawPath(location,locations[i+1])
-
-
-
-        # for i in range(len(route)-1) :
-        # self.Path(route[i],route[i+1],colour,thickness)
-        # if stepthrough:#if flag set, draw step by step
-        #     self.doNodes(self.world.depot)#draw depot only
-        #     self.doNodes(self.world.locations)#draw remaining locations
-        #     pygame.display.update()
-        #     pygame.time.delay(500)#sleep(0.5)
-
-    def set_controller(self, controller):
-        """
-        Set the controller
-        :param controller:
-        :return:
-        """
+    def set_controller(self, controller) -> None:
         self.controller = controller

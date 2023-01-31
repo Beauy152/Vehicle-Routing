@@ -27,7 +27,7 @@ class Artist:
 
     def drawLocation(self,l:'Location'):
         r = self.locationRadius
-        l.scale()
+        if not l.isScaled: l.scale()
         self.canvas.create_oval(
             l.x - r, l.y-r, l.x+r, l.y+r,
             fill=l.color )

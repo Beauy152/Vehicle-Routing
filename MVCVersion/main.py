@@ -11,7 +11,7 @@ class App:
         self.model = Model()
 
         # create a view and place it on the root window
-        self.view = ConfigurationGUI(600,400)
+        self.view = ConfigurationGUI(600,600)
 
         # create a controller
         self.controller = Controller(self.model, self.view)
